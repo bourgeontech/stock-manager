@@ -20,6 +20,16 @@ class Account extends CI_Controller {
     	$this->load->model( 'Accounts_model' );
     }
 
+	public function dashboard() {
+        $date = $this->input->post('date') ? $this->input->post('date') : date('Y-m-d');
+        $data['selected_date']    = $date;
+        $data['counter_summary']  = $this->Accounts_model->getCounterSummaryByDate($date);
+
+        $this->load->view('admin/layouts/admin_header');
+        $this->load->view('admin/accounts/dashboard', $data);
+        $this->load->view('admin/layouts/admin_footer');
+    }
+
 	public function getCustomerCreditReport($from_date, $to_date) {
     		$this->db->select('billing.id as bill_id, user_dtl.name as customer, billing_dtls.name as name, billing.recv_amt as received, billing.bal_amt as balance, SUM(billing_dtls.amount) as total, SUM(billing_dtls.postal_amt) as postal');
     		$this->db->from('billing');

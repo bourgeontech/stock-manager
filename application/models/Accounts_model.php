@@ -1533,5 +1533,26 @@ $this->db->select('group');
     }
 
 }
-    
+
+    public function getCounterSummaryByDate($date) {
+        $query = $this->db->query("
+            SELECT
+                counter.name AS counter_name,
+                counter.id   AS counter_id,
+                SUM(CASE WHEN billing.mode = 1 THEN billing.recv_amt ELSE 0 END) AS cash_total,
+                SUM(CASE WHEN billing.mode != 1 THEN billing.recv_amt ELSE 0 END) AS bank_total,
+                SUM(billing.recv_amt) AS grand_total
+            FROM billing
+            JOIN counter ON billing.counter = counter.id
+            WHERE billing.date = '$date'
+              AND billing.deleted = 0
+            GROUP BY billing.counter
+            ORDER BY counter.name
+        ");
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        }
+        return [];
+    }
+
     }
