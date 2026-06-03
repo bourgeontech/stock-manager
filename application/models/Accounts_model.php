@@ -1537,22 +1537,41 @@ $this->db->select('group');
     public function getCounterSummaryByDate($date) {
         $query = $this->db->query("
             SELECT
-                counter.name AS counter_name,
-                counter.id   AS counter_id,
-                SUM(CASE WHEN billing.mode = 1 THEN billing.recv_amt ELSE 0 END) AS cash_total,
-                SUM(CASE WHEN billing.mode != 1 THEN billing.recv_amt ELSE 0 END) AS bank_total,
-                SUM(billing.recv_amt) AS grand_total
+                counter.id            AS counter_id,
+                counter.name          AS counter_name,
+                payment_modes.id      AS mode_id,
+                payment_modes.name    AS mode_name,
+                SUM(billing.recv_amt) AS total
             FROM billing
-            JOIN counter ON billing.counter = counter.id
-            WHERE billing.date = '$date'
+            JOIN counter       ON billing.counter = counter.id
+            JOIN payment_modes ON billing.mode    = payment_modes.id
+            WHERE billing.date    = '$date'
               AND billing.deleted = 0
-            GROUP BY billing.counter
-            ORDER BY counter.name
+            GROUP BY billing.counter, billing.mode
+            ORDER BY counter.name, payment_modes.id
         ");
-        if ($query->num_rows() > 0) {
-            return $query->result_array();
+
+        $rows     = $query->result_array();
+        $counters = [];
+        $modes    = [];
+
+        foreach ($rows as $row) {
+            $cid = $row['counter_id'];
+            $mid = $row['mode_id'];
+
+            if (!isset($counters[$cid])) {
+                $counters[$cid] = [
+                    'counter_name' => $row['counter_name'],
+                    'modes'        => [],
+                    'row_total'    => 0,
+                ];
+            }
+            $counters[$cid]['modes'][$mid]  = (float)$row['total'];
+            $counters[$cid]['row_total']   += (float)$row['total'];
+            $modes[$mid] = $row['mode_name'];
         }
-        return [];
+
+        return ['counters' => $counters, 'modes' => $modes];
     }
 
     }

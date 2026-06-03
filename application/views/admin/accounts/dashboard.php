@@ -109,6 +109,7 @@
     text-transform: uppercase;
     color: #1a3a5c;
     text-align: left;
+    white-space: nowrap;
   }
 
   .accdash .summary-table thead th.num { text-align: right; }
@@ -125,21 +126,22 @@
     padding: 4px 10px;
     font-size: 9.5px;
     color: #334;
+    text-align: right;
+    white-space: nowrap;
   }
 
   .accdash .summary-table td.counter-name {
+    text-align: left;
     font-weight: 600;
     color: #1a3a5c;
   }
 
-  .accdash .summary-table td.cash-val {
-    text-align: right;
+  .accdash .summary-table td.mode-val {
     font-weight: 700;
     color: #2563a8;
   }
 
-  .accdash .summary-table td.bank-val {
-    text-align: right;
+  .accdash .summary-table td.row-total {
     font-weight: 700;
     color: #1a7a4a;
   }
@@ -155,12 +157,12 @@
     font-size: 9px;
     font-weight: 800;
     color: #7d6608;
+    text-align: right;
+    white-space: nowrap;
   }
 
-  .accdash .summary-table tfoot td.cash-val,
-  .accdash .summary-table tfoot td.bank-val {
-    text-align: right;
-    color: #7d6608;
+  .accdash .summary-table tfoot td.lbl {
+    text-align: left;
   }
 
   /* Action button row */
@@ -190,8 +192,6 @@
     transition: background 0.15s;
   }
 
-  .accdash .btn-action:hover { background: #2563a8; }
-
   .accdash .btn-action.green { background: #1a7a4a; }
   .accdash .btn-action.green:hover { background: #15643c; }
 
@@ -203,11 +203,13 @@
   /* Stats strip */
   .accdash .stats-strip {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 6px;
     background: #1a3a5c;
     color: #fff;
     border-radius: 0 0 5px 5px;
-    padding: 5px 14px;
+    padding: 6px 14px;
   }
 
   .accdash .stats-strip .st { display: flex; flex-direction: column; align-items: center; }
@@ -217,23 +219,12 @@
     letter-spacing: 0.07em;
     opacity: 0.65;
     margin-bottom: 1px;
+    white-space: nowrap;
   }
   .accdash .stats-strip .st-val {
     font-size: 12px;
     font-weight: 800;
     color: #7dd3fc;
-  }
-
-  /* Sub-section label */
-  .accdash .sub-label {
-    font-size: 8px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: #2563a8;
-    padding: 4px 10px 2px;
-    border-top: 1px solid #e0e6ed;
-    background: #f0f5fa;
   }
 
   /* Placeholder panel */
@@ -246,10 +237,28 @@
     text-transform: uppercase;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 800px) {
     .accdash .dashboard-grid { grid-template-columns: 1fr; }
   }
 </style>
+
+<?php
+  $counters    = isset($counter_summary['counters']) ? $counter_summary['counters'] : [];
+  $modes       = isset($counter_summary['modes'])    ? $counter_summary['modes']    : [];
+
+  /* column totals per mode */
+  $mode_totals = [];
+  $grand_total = 0;
+  foreach ($modes as $mid => $mname) {
+      $mode_totals[$mid] = 0;
+  }
+  foreach ($counters as $cdata) {
+      foreach ($cdata['modes'] as $mid => $amt) {
+          $mode_totals[$mid] = ($mode_totals[$mid] ?? 0) + $amt;
+          $grand_total += $amt;
+      }
+  }
+?>
 
 <div class="side_right">
 <div class="accdash">
@@ -277,35 +286,40 @@
         <thead>
           <tr>
             <th>Counter</th>
-            <th class="num">Cash</th>
-            <th class="num">Bank</th>
+            <?php foreach ($modes as $mid => $mname): ?>
+              <th class="num"><?php echo htmlspecialchars($mname); ?></th>
+            <?php endforeach; ?>
+            <th class="num">Total</th>
           </tr>
         </thead>
         <tbody>
-          <?php if (!empty($counter_summary)): ?>
-            <?php foreach ($counter_summary as $row): ?>
+          <?php if (!empty($counters)): ?>
+            <?php foreach ($counters as $cdata): ?>
               <tr>
-                <td class="counter-name"><?php echo htmlspecialchars($row['counter_name']); ?></td>
-                <td class="cash-val"><?php echo number_format((float)$row['cash_total'], 2); ?></td>
-                <td class="bank-val"><?php echo number_format((float)$row['bank_total'], 2); ?></td>
+                <td class="counter-name"><?php echo htmlspecialchars($cdata['counter_name']); ?></td>
+                <?php foreach ($modes as $mid => $mname): ?>
+                  <td class="mode-val">
+                    <?php echo number_format($cdata['modes'][$mid] ?? 0, 2); ?>
+                  </td>
+                <?php endforeach; ?>
+                <td class="row-total"><?php echo number_format($cdata['row_total'], 2); ?></td>
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="3" style="text-align:center; padding:10px; font-size:9px; color:#aaa;">No data for this date</td>
+              <td colspan="<?php echo count($modes) + 2; ?>" style="text-align:center; padding:10px; font-size:9px; color:#aaa;">
+                No data for this date
+              </td>
             </tr>
           <?php endif; ?>
         </tbody>
-        <?php
-          $total_cash  = array_sum(array_column($counter_summary, 'cash_total'));
-          $total_bank  = array_sum(array_column($counter_summary, 'bank_total'));
-          $grand_total = $total_cash + $total_bank;
-        ?>
         <tfoot>
           <tr>
-            <td><strong>Total</strong></td>
-            <td class="cash-val"><?php echo number_format($total_cash, 2); ?></td>
-            <td class="bank-val"><?php echo number_format($total_bank, 2); ?></td>
+            <td class="lbl"><strong>Total</strong></td>
+            <?php foreach ($modes as $mid => $mname): ?>
+              <td><?php echo number_format($mode_totals[$mid] ?? 0, 2); ?></td>
+            <?php endforeach; ?>
+            <td><?php echo number_format($grand_total, 2); ?></td>
           </tr>
         </tfoot>
       </table>
@@ -317,15 +331,14 @@
         </button>
       </div>
 
+      <!-- Stats strip: one tile per mode + grand total -->
       <div class="stats-strip">
-        <div class="st">
-          <span class="st-label">Cash Total</span>
-          <span class="st-val"><?php echo number_format($total_cash, 2); ?></span>
-        </div>
-        <div class="st">
-          <span class="st-label">Bank Total</span>
-          <span class="st-val"><?php echo number_format($total_bank, 2); ?></span>
-        </div>
+        <?php foreach ($modes as $mid => $mname): ?>
+          <div class="st">
+            <span class="st-label"><?php echo htmlspecialchars($mname); ?></span>
+            <span class="st-val"><?php echo number_format($mode_totals[$mid] ?? 0, 2); ?></span>
+          </div>
+        <?php endforeach; ?>
         <div class="st">
           <span class="st-label">Grand Total</span>
           <span class="st-val"><?php echo number_format($grand_total, 2); ?></span>
@@ -336,9 +349,7 @@
     <!-- PANEL 2 — Guest House (placeholder) -->
     <div class="panel">
       <div class="panel-title">Guest House</div>
-      <div class="panel-placeholder">
-        Coming soon
-      </div>
+      <div class="panel-placeholder">Coming soon</div>
     </div>
 
   </div><!-- /.dashboard-grid -->
