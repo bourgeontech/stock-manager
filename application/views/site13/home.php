@@ -1,0 +1,409 @@
+<?php 
+$aboutus=$this->site_model->aboutus_home();
+$aboutus=$this->site_model->getaboutus();
+$site_settings=$this->site_model->settings();
+?><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aai Tulja Bhavani Mandir – Paras, Akola</title>
+<link rel="stylesheet" href="<?php echo base_url(); ?>/assets/css/aaituljashared.css">
+<style>
+/* ── HERO SLIDER ── */
+.hero { position:relative; height:clamp(340px,56vw,610px); overflow:hidden; background:var(--maroon-deep); }
+.slide { position:absolute; inset:0; opacity:0; transition:opacity 1.1s ease; }
+.slide.active { opacity:1; }
+.slide img { width:100%; height:100%; object-fit:cover; filter:brightness(.68) saturate(1.1); }
+.hero-overlay { position:absolute; inset:0; background:linear-gradient(180deg,rgba(58,10,0,.12) 0%,rgba(58,10,0,.5) 55%,rgba(58,10,0,.88) 100%); }
+.hero-content { position:absolute; bottom:0; left:0; right:0; padding:clamp(22px,5vw,60px) clamp(20px,7vw,90px); text-align:center; }
+.hero-deva { font-family:'Noto Serif Devanagari',serif; font-size:clamp(.9rem,2.2vw,1.4rem); color:var(--gold-lt); letter-spacing:.1em; margin-bottom:7px; animation:fadeD .9s ease both; }
+.hero-h1 { font-family:'Cinzel Decorative',serif; font-size:clamp(1.5rem,5vw,3.2rem); color:#fff; line-height:1.1; text-shadow:0 4px 22px rgba(0,0,0,.7); margin-bottom:6px; animation:fadeD .9s .1s ease both; }
+.hero-h1 em { color:var(--gold-lt); font-style:normal; }
+.hero-sub { color:rgba(253,239,192,.78); font-size:clamp(.75rem,1.4vw,.95rem); letter-spacing:.16em; margin-bottom:26px; animation:fadeD .9s .2s ease both; }
+.hero-ctas { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; animation:fadeD .9s .3s ease both; }
+.hero-cta { font-family:'Cinzel',serif; font-size:.78rem; letter-spacing:.08em; padding:11px 24px; border-radius:5px; text-decoration:none; border:none; cursor:pointer; transition:transform .15s,box-shadow .15s; }
+.hero-cta:hover { transform:translateY(-2px); }
+.cta-saffron { background:linear-gradient(135deg,var(--saffron),var(--saffron-lt)); color:#fff; box-shadow:0 4px 18px rgba(180,60,0,.45); }
+.cta-gold { background:linear-gradient(135deg,var(--gold),var(--gold-lt)); color:var(--maroon-deep); font-weight:700; box-shadow:0 4px 18px rgba(200,140,0,.4); }
+.cta-ghost { background:rgba(255,255,255,.1); color:var(--gold-pale); border:1.5px solid rgba(201,147,10,.55); backdrop-filter:blur(6px); }
+@keyframes fadeD { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:none} }
+
+.s-dots { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:7px; }
+.s-dot { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.38); border:none; cursor:pointer; transition:.3s; }
+.s-dot.active { background:var(--gold-lt); transform:scale(1.35); }
+.s-arrow { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,.28); border:1.5px solid rgba(255,255,255,.22); color:#fff; font-size:1.2rem; width:38px; height:38px; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s; }
+.s-arrow:hover { background:rgba(201,147,10,.5); }
+.s-prev { left:14px; } .s-next { right:14px; }
+
+/* ── STATS BAR ── */
+.stats-bar { background:linear-gradient(135deg,var(--maroon),#8b2500); }
+.stats-inner { max-width:1160px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); }
+.stat-cell { display:flex; align-items:center; justify-content:center; gap:10px; padding:18px 14px; border-right:1px solid rgba(255,255,255,.1); }
+.stat-cell:last-child{border:none;}
+.stat-icon { font-size:1.6rem; }
+.stat-label { font-size:.62rem; letter-spacing:.14em; color:rgba(253,239,192,.65); text-transform:uppercase; }
+.stat-val { font-family:'Cinzel',serif; font-size:.86rem; color:var(--gold-pale); }
+
+/* ── ABOUT ── */
+.about-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+.about-img-wrap { position:relative; }
+.about-img { width:100%; aspect-ratio:4/5; object-fit:cover; border-radius:var(--r); box-shadow:var(--sh-warm); }
+.about-badge { position:absolute; bottom:-18px; right:-18px; background:linear-gradient(135deg,var(--gold),var(--gold-lt)); color:var(--maroon-deep); padding:16px 20px; border-radius:var(--r-sm); box-shadow:var(--sh-warm); text-align:center; }
+.about-badge strong { font-family:'Cinzel Decorative',serif; font-size:1.1rem; display:block; }
+.about-badge span { font-size:.65rem; letter-spacing:.1em; }
+.trust-row { display:flex; gap:18px; margin-top:20px; flex-wrap:wrap; }
+.trust-item { display:flex; align-items:center; gap:7px; font-size:.78rem; color:var(--text-mid); }
+.ti-icon { color:var(--gold); }
+
+/* ── SERVICES ── */
+.services-wrap { background:var(--cream-dark); }
+.services-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(196px,1fr)); gap:18px; margin-top:38px; }
+.svc-card { background:var(--white); border:1px solid rgba(201,147,10,.22); border-radius:var(--r); padding:26px 18px; text-align:center; box-shadow:var(--sh-card); transition:transform .2s,box-shadow .2s; }
+.svc-card:hover { transform:translateY(-4px); box-shadow:var(--sh-warm); }
+.svc-icon { font-size:2.2rem; margin-bottom:12px; }
+.svc-deva { font-family:'Noto Serif Devanagari',serif; font-size:.8rem; color:var(--gold); margin-bottom:4px; }
+.svc-name { font-family:'Cinzel',serif; font-size:.86rem; color:var(--maroon); margin-bottom:6px; }
+.svc-desc { font-size:.74rem; color:var(--text-light); line-height:1.56; }
+.booking-cta { background:linear-gradient(135deg,var(--maroon-deep),var(--maroon)); border-radius:var(--r); padding:32px 24px; text-align:center; color:var(--gold-pale); box-shadow:var(--sh-warm); }
+.booking-cta h3 { font-family:'Cinzel Decorative',serif; font-size:1rem; color:var(--gold-lt); margin-bottom:9px; }
+.booking-cta p { font-size:.8rem; margin-bottom:18px; opacity:.84; line-height:1.6; }
+
+/* ── EVENTS+GALLERY GRID ── */
+.eg-grid { display:grid; grid-template-columns:1fr 1fr; gap:38px; }
+.ev-card { background:var(--white); border-radius:var(--r); overflow:hidden; border:1px solid rgba(201,147,10,.18); box-shadow:var(--sh-card); transition:transform .2s; }
+.ev-card:hover { transform:translateY(-4px); }
+.ev-img { width:100%; aspect-ratio:16/9; object-fit:cover; }
+.ev-info { padding:14px 16px; }
+.ev-info h4 { font-family:'Cinzel',serif; font-size:.86rem; color:var(--maroon); margin-bottom:5px; }
+.ev-info p { font-size:.76rem; color:var(--text-light); line-height:1.58; }
+.mosaic { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.mosaic-item { border-radius:var(--r-sm); overflow:hidden; position:relative; cursor:pointer; }
+.mosaic-item:first-child { grid-column:span 2; }
+.mosaic-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
+.mosaic-item:hover img { transform:scale(1.07); }
+.mosaic-overlay { position:absolute; inset:0; background:rgba(58,10,0,.42); opacity:0; transition:opacity .3s; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.3rem; }
+.mosaic-item:hover .mosaic-overlay { opacity:1; }
+
+/* ── TIMING ── */
+.timing-bg { background:linear-gradient(135deg,var(--maroon-deep),var(--maroon)); }
+.timing-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr)); gap:16px; margin-top:34px; }
+.t-card { background:rgba(255,255,255,.07); border:1px solid rgba(201,147,10,.28); border-radius:var(--r); padding:20px 16px; text-align:center; }
+.t-card .t-icon { font-size:1.9rem; margin-bottom:8px; }
+.t-card h4 { font-family:'Cinzel',serif; font-size:.84rem; color:var(--gold-lt); margin-bottom:5px; }
+.t-card p { font-size:.77rem; opacity:.78; line-height:1.58; color:var(--gold-pale); }
+
+/* ── DONATION CTA ── */
+.donate-cta { background:linear-gradient(160deg,#7b1e00,#c4400a 60%,#e8610a); text-align:center; padding:60px 20px; }
+.donate-cta h2 { font-family:'Cinzel Decorative',serif; color:var(--gold-pale); font-size:clamp(1.3rem,3vw,1.9rem); margin-bottom:10px; }
+.donate-cta p { color:rgba(253,239,192,.82); font-size:.92rem; max-width:500px; margin:0 auto 26px; line-height:1.7; }
+.donate-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+
+@media(max-width:860px){
+  .about-grid { grid-template-columns:1fr; gap:28px; }
+  .about-badge { bottom:-10px; right:10px; }
+  .eg-grid { grid-template-columns:1fr; gap:24px; }
+  .stats-inner { grid-template-columns:repeat(2,1fr); }
+  .stat-cell:nth-child(2) { border-right:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <span>🕉️ जय तुळजाभवानी मातेकी जय 🕉️</span>
+    <span class="topbar-sep">|</span>
+    <span>📞 9822535654 &nbsp;/&nbsp; 8788097975</span>
+    <span class="topbar-sep">|</span>
+    <span>✉️ sadhanagroup.org@gmail.com</span>
+    <span class="topbar-sep">|</span>
+    <a href="https://shrituljabhavaniparas.org/index.php/worldline/donation">💛 Donate Online</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-orb">🪷</div>
+      <div class="logo-words">
+        <h1>AAI TULJA BHAVANI MANDIR</h1>
+        <p>PARAS · BALAPUR · DIST. AKOLA</p>
+      </div>
+    </a>
+    <ul class="nav-list">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li>
+        <button class="nav-drop-btn">The Temple ▾</button>
+        <div class="nav-dropdown">
+          <a href="#">About Temple</a>
+          <a href="https://shrituljabhavaniparas.org/index.php/welcome/priest">Temple Priest</a>
+          <a href="https://shrituljabhavaniparas.org/index.php/welcome/trusteeboard">Trustee Board</a>
+          <a href="https://shrituljabhavaniparas.org/index.php/welcome/festivalCommittee">Festival Committee</a>
+        </div>
+      </li>
+      <li>
+        <button class="nav-drop-btn">Pooja ▾</button>
+        <div class="nav-dropdown">
+          <a href="https://shrituljabhavaniparas.org/index.php/welcome/dietys">Deities</a>
+          <a href="https://shrituljabhavaniparas.org/index.php/welcome/templeTiming">Temple Timing</a>
+        </div>
+      </li>
+      <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/news">News</a></li>
+      <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/gallery">Gallery</a></li>
+      <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="https://shrituljabhavaniparas.org/index.php/worldline/booking" class="nav-list a nav-btn-book" style="font-family:'Cinzel',serif;font-size:.71rem;letter-spacing:.07em;padding:7px 13px;border-radius:4px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--maroon-deep);font-weight:700;">📅 Book Pooja</a>
+      <a href="shop.html" class="nav-btn-shop" style="font-family:'Cinzel Decorative',serif;font-size:.65rem;letter-spacing:.07em;padding:7px 13px;border-radius:4px;text-decoration:none;display:flex;align-items:center;gap:4px;">🛕 For Sale</a>
+      <button class="nav-btn-cart" onclick="openCart()">🛒 <span class="cart-badge">0</span></button>
+    </div>
+    <button class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <span class="marquee-track">🪷 JAI TULJA BHAVANI &nbsp;✦&nbsp; ONLINE BOOKING AVAILABLE &nbsp;✦&nbsp; ARCHANA &amp; SANKALP POOJA &nbsp;✦&nbsp; NAVRATRI MAHOTSAV &nbsp;✦&nbsp; JAI JAGDAMB JAGDAMB &nbsp;✦&nbsp; PARAS · DIST AKOLA &nbsp;✦&nbsp; 🪷 JAI TULJA BHAVANI &nbsp;✦&nbsp; ONLINE BOOKING AVAILABLE &nbsp;✦&nbsp; ARCHANA &amp; SANKALP POOJA &nbsp;✦&nbsp; NAVRATRI MAHOTSAV &nbsp;✦&nbsp; JAI JAGDAMB JAGDAMB &nbsp;✦&nbsp; PARAS · DIST AKOLA &nbsp;✦&nbsp;</span>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <?php 
+                        foreach ($banner as $value){
+                        ?>
+                       <div class="slide active"><img src="src='../../uploads/banner/<?PHP echo $value['image']; ?>" alt="Temple" loading="eager"></div>
+  
+  
+                    <?php } ?><div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-deva">🙏 आई तुळजाभवानी मंदिर – परास, जि. अकोला 🙏</div>
+    <h1 class="hero-h1">Aai <em>Tulja Bhavani</em> Mandir</h1>
+    <p class="hero-sub">PARAS · TQ BALAPUR · DIST. AKOLA – 444109</p>
+    <div class="hero-ctas">
+      <a href="https://shrituljabhavaniparas.org/index.php/worldline/booking" class="hero-cta cta-gold">📅 Book Pooja Online</a>
+      <a href="shop.html" class="hero-cta cta-saffron">🛕 Temple Shop</a>
+      <a href="https://shrituljabhavaniparas.org/index.php/worldline/donation" class="hero-cta cta-ghost">💛 Donate Now</a>
+    </div>
+  </div>
+  <button class="s-arrow s-prev" onclick="moveSlide(-1)">&#8249;</button>
+  <button class="s-arrow s-next" onclick="moveSlide(1)">&#8250;</button>
+  <div class="s-dots" id="sDots"></div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-cell"><span class="stat-icon">🪷</span><div><div class="stat-label">Established</div><div class="stat-val">Ancient Mandir</div></div></div>
+    <div class="stat-cell"><span class="stat-icon">🙏</span><div><div class="stat-label">Daily Poojas</div><div class="stat-val">Archana & Sankalp</div></div></div>
+    <div class="stat-cell"><span class="stat-icon">📅</span><div><div class="stat-label">Service</div><div class="stat-val">Online Booking</div></div></div>
+    <div class="stat-cell"><span class="stat-icon">📍</span><div><div class="stat-label">Location</div><div class="stat-val">Paras, Akola</div></div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section">
+  <div class="container">
+    <div class="about-grid fade-up">
+      <div class="about-img-wrap">
+        <img class="about-img" src="https://shrituljabhavaniparas.org/uploads/banner/WhatsApp_Image_2025-11-25_at_10_37_03.jpeg" alt="Temple">
+        <div class="about-badge"><strong>🕉️</strong><span>Sadhana Foundation</span></div>
+      </div>
+      <div>
+        <span class="lbl">Our Sacred Abode</span>
+        <h2 class="sec-title">Aai Tulja Bhavani Mandir</h2>
+        <div class="divider"><span>✦ ॐ ✦</span></div>
+        <p class="sec-sub">AAI TULJA BHAVANI MANDIR, recently developed at Paras, Dist Akola, through the Sadhana Charitable Foundation (U85300MH2019NPL334216) — DARPAN ID: MH/2024/0444650. A centre of faith, devotion and community service.</p>
+        <p class="sec-sub" style="margin-top:10px;">We welcome all devotees to offer prayers, perform poojas, and seek the blessings of Aai Tulja Bhavani. Online booking and donation facilities are available.</p>
+        <div class="trust-row">
+          <div class="trust-item"><span class="ti-icon">✅</span> Registered Foundation</div>
+          <div class="trust-item"><span class="ti-icon">✅</span> DARPAN Certified</div>
+          <div class="trust-item"><span class="ti-icon">✅</span> Online Services</div>
+        </div>
+        <a href="about.html" class="btn-outline" style="margin-top:22px;">Read More About Temple →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section services-wrap">
+  <div class="container">
+    <div class="fade-up" style="text-align:center;">
+      <span class="lbl" style="justify-content:center;display:flex;">Available Poojas</span>
+      <h2 class="sec-title" style="margin:0 auto;">Divine Services</h2>
+    </div>
+    <div class="services-grid fade-up">
+      <div class="svc-card"><div class="svc-icon">🌸</div><div class="svc-deva">अर्चना</div><div class="svc-name">ARCHANA</div><div class="svc-desc">Offer sacred flowers and prayers to Maa Tulja Bhavani with full mantras.</div></div>
+      <div class="svc-card"><div class="svc-icon">🔱</div><div class="svc-deva">संकल्प</div><div class="svc-name">SANKALP</div><div class="svc-desc">Make a sacred vow and dedication to the goddess for blessings.</div></div>
+      <div class="svc-card"><div class="svc-icon">🪔</div><div class="svc-deva">आरती</div><div class="svc-name">AARTI</div><div class="svc-desc">Join morning and evening aarti — experience divine energy and devotion.</div></div>
+      <div class="svc-card"><div class="svc-icon">🥥</div><div class="svc-deva">पंचामृत अभिषेक</div><div class="svc-name">ABHISHEK</div><div class="svc-desc">Sacred bathing of the deity with panchamrit — milk, curd, honey, ghee.</div></div>
+      <div class="booking-cta">
+        <h3>📅 Book Your Pooja Online</h3>
+        <p>Reserve your slot for Archana, Sankalp or special pooja from anywhere.</p>
+        <a href="https://shrituljabhavaniparas.org/index.php/worldline/booking" class="btn-gold">Book Now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EVENTS + GALLERY -->
+<section class="section" style="background:var(--cream-dark);">
+  <div class="container">
+    <div class="eg-grid">
+      <div class="fade-up">
+        <span class="lbl">Latest</span>
+        <h2 class="sec-title">Events & Festivals</h2>
+        <div style="display:flex;flex-direction:column;gap:14px;margin-top:22px;">
+          <div class="ev-card">
+            <img class="ev-img" src="https://shrituljabhavaniparas.org/uploads/events/a716d77e-0a9f-42b6-b1fd-252ca2816a05_(1).jpeg" alt="Event" onerror="this.style.display='none'">
+            <div class="ev-info"><h4>🪷 JAGDAMB JAGDAMB</h4><p>Grand festival celebrations at Aai Tulja Bhavani Mandir. All devotees warmly invited.</p></div>
+          </div>
+          <div class="ev-card">
+            <div style="background:linear-gradient(135deg,var(--gold-pale),#ffd080);height:100px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;">🎉</div>
+            <div class="ev-info"><h4>🔱 Navratri Mahotsav</h4><p>Nine nights of devotion and prayers dedicated to Maa Bhavani. Special pooja arrangements.</p></div>
+          </div>
+        </div>
+        <a href="news.html" class="btn-outline" style="margin-top:16px;display:inline-block;">View All News & Events →</a>
+      </div>
+      <div class="fade-up">
+        <span class="lbl">Photos</span>
+        <h2 class="sec-title">Temple Gallery</h2>
+        <div class="mosaic" style="margin-top:22px;">
+          <div class="mosaic-item"><img src="https://shrituljabhavaniparas.org/uploads/gallery/3b7a5978-105b-4c34-9b3f-66f8476b1a15_(1).jpeg" alt="g"><div class="mosaic-overlay">🔍</div></div>
+          <div class="mosaic-item"><img src="https://shrituljabhavaniparas.org/uploads/banner/9bbdfb58-ad3b-405a-87ad-417795258aa0_(1).jpeg" alt="g"><div class="mosaic-overlay">🔍</div></div>
+          <div class="mosaic-item"><img src="https://shrituljabhavaniparas.org/uploads/gallery/WhatsApp_Image_2025-02-27_at_3_51_30_PM1.jpeg" alt="g"><div class="mosaic-overlay">🔍</div></div>
+          <div class="mosaic-item"><img src="https://shrituljabhavaniparas.org/uploads/banner/4879dae3-2aa0-40d1-9486-f4c81156af22.jpeg" alt="g"><div class="mosaic-overlay">🔍</div></div>
+        </div>
+        <a href="https://shrituljabhavaniparas.org/index.php/welcome/gallery" class="btn-outline" style="margin-top:14px;display:inline-block;">Full Gallery →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMING -->
+<section class="section timing-bg">
+  <div class="container">
+    <div class="fade-up" style="text-align:center;">
+      <span class="lbl" style="display:flex;justify-content:center;color:var(--gold-lt);">Plan Your Visit</span>
+      <h2 class="sec-title" style="color:var(--gold-pale);margin:0 auto;">Temple Timings</h2>
+    </div>
+    <div class="timing-grid fade-up">
+      <div class="t-card"><div class="t-icon">🌅</div><h4>Morning Darshan</h4><p>6:00 AM – 12:00 PM<br>Morning aarti at 6:30 AM</p></div>
+      <div class="t-card"><div class="t-icon">☀️</div><h4>Afternoon</h4><p>12:00 PM – 4:00 PM<br>Poojas by appointment</p></div>
+      <div class="t-card"><div class="t-icon">🌆</div><h4>Evening Darshan</h4><p>4:00 PM – 9:00 PM<br>Evening aarti at 7:00 PM</p></div>
+      <div class="t-card"><div class="t-icon">📅</div><h4>Festival Days</h4><p>Extended hours on<br>Navratri & special occasions</p></div>
+      <div class="t-card"><div class="t-icon">📞</div><h4>Contact</h4><p>9822535654<br>8788097975</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE CTA -->
+<div class="donate-cta">
+  <h2>Support the Mandir — Donate Today</h2>
+  <p>Your contribution helps maintain the temple and serve thousands of devotees. Every rupee goes toward the divine service of Maa Tulja Bhavani.</p>
+  <div class="donate-row">
+    <a href="https://shrituljabhavaniparas.org/index.php/worldline/donation" class="btn-gold">💛 Donate Online</a>
+    <a href="https://shrituljabhavaniparas.org/index.php/worldline/booking" class="btn-primary">📅 Book a Pooja</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="f-logo-text">🪷 AAI TULJA BHAVANI MANDIR</div>
+        <p class="f-desc">A sacred centre of faith and devotion at Paras, Akola. Established through the Sadhana Charitable Foundation. Reg: U85300MH2019NPL334216 · DARPAN ID: MH/2024/0444650</p>
+      </div>
+      <div>
+        <div class="f-head">Quick Links</div>
+        <ul class="f-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Temple</a></li>
+          <li><a href="news.html">News & Events</a></li>
+          <li><a href="shop.html">Temple Shop</a></li>
+          <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/gallery">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="f-head">Policies</div>
+        <ul class="f-links">
+          <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/termsandconditions">Terms & Conditions</a></li>
+          <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/disclaimer">Disclaimer</a></li>
+          <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/privacypolicy">Privacy Policy</a></li>
+          <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/cancellationpolicy">Refund Policy</a></li>
+          <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/rules">Temple Rules</a></li>
+        </ul>
+      </div>
+      <div class="f-contact">
+        <div class="f-head">Contact Us</div>
+        <p>📍 AAI TULJABHAVANI MANDIR<br>Paras, TQ Balapur<br>Dist. Akola – 444109, Maharashtra</p>
+        <p style="margin-top:8px;">📞 <a href="tel:9822535654">9822535654</a> / <a href="tel:8788097975">8788097975</a></p>
+        <p>✉️ <a href="mailto:sadhanagroup.org@gmail.com">sadhanagroup.org@gmail.com</a></p>
+        <div class="f-cta-row">
+          <a href="https://shrituljabhavaniparas.org/index.php/worldline/booking" class="f-cta f-cta-book">Book Pooja</a>
+          <a href="https://shrituljabhavaniparas.org/index.php/worldline/donation" class="f-cta f-cta-donate">Donate</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 Aai Tulja Bhavani Mandir, Paras · Sadhana Charitable Foundation</p>
+      <p>🕉️ जय तुळजाभवानी 🕉️</p>
+    </div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cd-head"><h3>🛒 Your Cart</h3><button class="cd-close" onclick="closeCart()">✕</button></div>
+  <div class="cd-list" id="cdList"><div class="cd-empty"><div class="cd-empty-icon">🪔</div><p>Your cart is empty.<br>Visit the shop!</p></div></div>
+  <div class="cd-foot" id="cdFoot" style="display:none;">
+    <div class="cd-trow"><span>Subtotal</span><span id="cdSubtotal">₹0</span></div>
+    <div class="cd-trow"><span>Shipping</span><span>₹50</span></div>
+    <div class="cd-trow grand"><span>Total</span><span id="cdTotal">₹0</span></div>
+    <button class="cd-proceed" onclick="openCheckout()">✨ Proceed to Checkout</button>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-wrap" id="checkoutModal">
+  <div class="modal-box">
+    <div class="mo-head"><h3>🙏 Checkout</h3><button class="cd-close" onclick="closeCheckout()">✕</button></div>
+    <div class="mo-body" id="moForm">
+      <div class="os-box" id="moSummary"></div>
+      <span class="lbl" style="margin-bottom:11px;display:block;">📦 Delivery Details</span>
+      <input class="f-ctrl" id="moName" placeholder="Full Name *">
+      <div class="two-col"><input class="f-ctrl" id="moPhone" placeholder="Phone *"><input class="f-ctrl" id="moEmail" placeholder="Email (optional)" type="email"></div>
+      <textarea class="f-ctrl" id="moAddr" rows="2" placeholder="House No, Street, Area *"></textarea>
+      <div class="two-col"><input class="f-ctrl" id="moCity" placeholder="City *"><input class="f-ctrl" id="moPin" placeholder="Pincode *" maxlength="6"></div>
+      <select class="f-ctrl" id="moState"><option>Maharashtra</option><option>Gujarat</option><option>Madhya Pradesh</option><option>Karnataka</option><option>Andhra Pradesh</option><option>Telangana</option><option>Rajasthan</option><option>Uttar Pradesh</option><option>Other</option></select>
+      <span class="lbl" style="margin-bottom:8px;display:block;">💳 Payment</span>
+      <select class="f-ctrl" id="moPayment"><option>UPI / GPay / PhonePe</option><option>Cash on Delivery</option><option>Net Banking</option><option>Debit / Credit Card</option></select>
+      <button class="mo-place" onclick="placeOrder()">🙏 Place Order — <span id="moTotal">₹0</span></button>
+    </div>
+    <div class="order-ok" id="moSuccess" style="display:none;">
+      <div class="ok-icon">🎉</div><h3>Order Confirmed!</h3>
+      <p>Jay Tulja Bhavani 🙏<br>Your order has been received successfully.</p>
+      <div class="order-id" id="moOrderId"></div>
+      <p>We will contact you at your provided details shortly.</p><br>
+      <button class="mo-place" onclick="closeCheckout()">Continue</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="<?php echo base_url(); ?>/assets/css/aaituljashared.js"></script>
+<script>
+/* ── HERO SLIDER ── */
+let cur=0, total=5, timer;
+function buildDots(){const d=document.getElementById('sDots');for(let i=0;i<total;i++){const b=document.createElement('button');b.className='s-dot'+(i===0?' active':'');b.onclick=()=>goSlide(i);d.appendChild(b);}}
+function goSlide(n){document.querySelectorAll('.slide')[cur].classList.remove('active');document.querySelectorAll('.s-dot')[cur].classList.remove('active');cur=(n+total)%total;document.querySelectorAll('.slide')[cur].classList.add('active');document.querySelectorAll('.s-dot')[cur].classList.add('active');}
+function moveSlide(d){clearInterval(timer);goSlide(cur+d);start();}
+function start(){timer=setInterval(()=>goSlide(cur+1),4800);}
+document.addEventListener('DOMContentLoaded',()=>{buildDots();start();});
+</script>
+</body>
+</html>

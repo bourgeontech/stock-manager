@@ -1,0 +1,507 @@
+@charset "utf-8";
+/* CSS Document */
+
+@font-face {
+    font-family: 'SourceSansProBold';
+    src: url('../fonts/SourceSansProBold.eot');
+    src: url('../fonts/SourceSansProBold.eot') format('embedded-opentype'),
+         url('../fonts/SourceSansProBold.woff2') format('woff2'),
+         url('../fonts/SourceSansProBold.woff') format('woff'),
+         url('../fonts/SourceSansProBold.ttf') format('truetype'),
+         url('../images/SourceSansProBold.svg#SourceSansProBold') format('svg');
+}
+@font-face {
+    font-family: 'SourceSansProRegular';
+    src: url('../fonts/SourceSansProRegular.eot');
+    src: url('../fonts/SourceSansProRegular.eot') format('embedded-opentype'),
+         url('../fonts/SourceSansProRegular.woff2') format('woff2'),
+         url('../fonts/SourceSansProRegular.woff') format('woff'),
+         url('../fonts/SourceSansProRegular.ttf') format('truetype'),
+         url('../images/SourceSansProRegular.svg#SourceSansProRegular') format('svg');
+}
+
+body {font-family:SourceSansProRegular, Arial, Tahoma; color:#252524;}
+/* Header Styles */
+.headerBg {background:#991403; padding:0 15px;}
+.btnVazhipadu {
+  border-radius: 10px;
+  font-family: SourceSansProBold, Arial, Tahoma;
+  color: #fff;
+  font-size: 16px;
+  background:  #bf2815;
+  border: none;
+  text-align:center;
+
+  width: 100%;
+  padding: 20px 17px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.btnVazhipadu:hover {background: #fcb132;}
+.btnVazhipadu1 {
+  border-radius: 10px;
+  font-family: SourceSansProBold, Arial, Tahoma;
+  color: #fff;
+  font-size: 16px;
+  background:  #bf2815;
+  border: none;
+  text-align:left;
+
+  width: 100%;
+  padding: 20px 17px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.btnVazhipadu1:hover {background:  #fcb132;}
+.mainNavBg {background:#fcb132; padding:0 15px;}
+.listMainNav {margin:0; padding:0; float:left;}
+.listMainNav li {list-style-type:none; display:inline-block;}
+.listMainNav li a{display:inline-block; padding:10px 19px; color:#020100; font-size:17px;}
+.listMainNav li a:hover {background:#cb8e26; color:#fff; text-decoration:none;}
+.listMainNav li a.active {background:#cb8e26; color:#fff; text-decoration:none;}
+.socialIcons {float:right; margin:12px 0 12px 0;}
+
+/* Banner Styles */
+.bannerBg {padding:0;}
+.txtBannerContent {width:100%;  font-size:56px; color:#fff; font-family:SourceSansProBold, Arial, Tahoma; -moz-text-shadow: 5px 5px 5px #000; -webkit-text-shadow: 5px 5px 5px #000; -o-text-shadow: 5px 5px 5px #000; text-shadow: 5px 5px 5px #000; }
+.bannerHolder {position:relative;}
+
+/* Content Area Styles */
+.timingBg {background:#581701;}
+.darsanTimeImg {margin-right:0px; margin-bottom:-1px;}
+.darsanTimeImg2 {margin-right:0px; margin-bottom:-1px;width:300px;height:45px;}
+.txt16BoldWhite {font-family:SourceSansProBold, Arial, Tahoma; font-size:16px; color:#fff;}
+.txt16White {font-size:16px; color:#fff;}
+.darsanArrow {margin:0 10px;}
+.listTiming {margin:0; padding:0;}
+.listTiming li {display:inline-block;}
+.templeNewsHolder {min-height:160px; background:#411101; padding:30px 30px 30px 10%; }
+.head22YellowBold {font-family:SourceSansProBold, Arial, Tahoma; font-size:22px; color:#fcb132; margin:0 0 10px 0;}
+.txt17White {color:#fff; font-size:17px;}
+.txt16White {color:#fff; font-size:16px;}
+.lnkBrown {color:#bf2815;}
+.lnkBrown:hover {color:#ffa000; text-decoration:none;}
+.donationHolder {min-height:160px; background:url(../images/donations-bg.jpg) no-repeat; background-size:cover; padding:20px 10% 10px 30px; text-align:center;}
+.btnDonations {background:#ffa000; padding:8px 50px; border-radius:7px; border:none; font-family:SourceSansProBold, Arial, Tahoma; font-size:22px; color:#fff;}
+.btnDonations:hover {background:#991403;}
+.newsBg {background:#411101;}
+.narayanaBg {background:url(../images/pattern1.jpg) repeat; padding:70px 15px;}
+.narayanaTextAlign {margin-top:70px;}
+.aboutBg {padding:130px 15px; background:url(../images/about-bg.jpg) no-repeat center center; background-size:cover;}
+.head30BoldWhite {font-family:SourceSansProBold, Arial, Tahoma; font-size:30px; color:#fff; margin:0 0 20px 0;}
+.txt17WhiteMargin20px {font-size:20px; color:#fff; margin:20px 0;}
+.listWhiteNoBullet {max-resolution: 2px;0px 0 0 0; padding:0;}
+.listWhiteNoBullet li {list-style-type:none; color:#fff; margin-bottom:5px;font-size:17px;}
+.oomAlign {margin:100px 0 30px 0;}
+.btnReadMoreWhite {border-radius:5px; background:#ffa000; color:#991403; font-size:15px; padding:10px 50px; border:none;font-weight:bold}
+.btnReadMoreWhite:hover { background:#fff; color:#991403;}
+.poojaTimesBg {background:url(../images/pattern1.jpg) repeat; padding:70px 15px;}
+.poojaTimesImgHolder {height:271px; background:url(../images/pooja-times-img.jpg) no-repeat center center; background-size:cover; }
+.poojaTimesTxtHolder {height:271px; background:#991403; text-align:center; padding:80px 0 0 0;}
+.mainOfferingTxtHolder {height:271px; background:#ffa000; text-align:center; padding:80px 0 0 0;}
+.btnClickHereYellow {border-radius:5px; background:#991403; color:#fff; font-size:15px; padding:10px 50px; border:none;font-weight:bold}
+.btnClickHereYellow:hover { background:#fff; color:#991403;}
+.mainOfferingImgHolder {height:271px; background:url(../images/main-offerings-img.jpg) no-repeat center center; background-size:cover; margin-bottom:70px;}
+.oomBg {height:542px; background:url(../images/oom-bg.jpg) no-repeat center center; background-size:cover; padding:30px;}
+.imgBgBox1 {width:100%; height:363px;  background:url(../images/img-box1.jpg) no-repeat center center; background-size:cover; vertical-align:bottom; padding:235px 20px 20px 20px;}
+.imgBgBox2 {width:100%; height:363px;  background:url(../images/img-box2.jpg) no-repeat center center; background-size:cover; vertical-align:bottom; padding:235px 20px 20px 20px;}
+.imgBgBox3 {width:100%; height:363px; background:url(../images/img-box3.jpg) no-repeat center center; background-size:cover; vertical-align:bottom; padding:235px 20px 20px 20px;}
+.imgBgBox4 {width:100%; height:363px;  background:url(../images/img-box4.jpg) no-repeat center top; background-size:cover; vertical-align:bottom; padding:235px 20px 20px 20px;}
+.head22BoldWhiteMargin15 {font-family:SourceSansProBold, Arial, Tahoma; margin:15px 0; color:#fff;}
+.lnk14Yellow {font-size:14px; color:#ffa000;}
+.lnk14Yellow:hover {color:#fff; text-decoration:none;}
+.downloadBg {background:#c1851e; padding:30px 15px;}
+.headDownload {width:134px; font-family:SourceSansProBold, Arial, Tahoma; color:#fff; font-size:30px; display:block; float:left; margin:0;}
+.audioControll {width:100%; margin-top:15px;}
+.btnViewAll {width:100%; background:#991403; border-radius:5px; padding:10px 0; color:#fff;font-weight:bold; border:none; margin:10px 0 0 0; font-size:15px;}
+.btnViewAll:hover {background:#ffa000;}
+.accommodationBg {background:url(../images/pattern1.jpg) repeat; padding:70px 15px;}
+.accommodationTextWrapper {width:100%; height:80px; margin-top:-80px; z-index:10; position:relative;}
+.accommodationTextHolder {width:25%; float:left; background:url(../images/accommodation-text-bg.png) repeat-y; padding:16px;}
+.head30BoldBlack {font-family:SourceSansProBold, Arial, Tahoma; font-size:30px; background:url(../images/head-devider.png) no-repeat center bottom; padding-bottom:30px; margin-bottom:30px;}
+.txt14White {font-size:14px; color:#fff; margin:0;}
+.txt20Yellow {font-size:20px; color:#fcb132; margin:0;}
+
+.locationMapBg {padding:0;}
+.locationBg {background:#ebe8df;}
+.contactBg {background:url(../images/contact-bg.png) right bottom #991403; min-height:655px; padding:30px;}
+.headContact {width:205px; display:block; margin:70px 0 30px 0; padding-bottom:25px; text-align:center; font-size:30px; color:#fff; background:url(../images/yellow-devider.png) no-repeat center bottom;}
+.contactDetailsTbl td {    padding-bottom: 30px;    vertical-align: top;    color: #fff;	line-height:26px;	font-size:17px;}
+.contactDetailsTbl td.mailAddress {word-break: break-all;}
+.head17RegularWhitBg{ background:#991403; font-size:17px; color:#fff; position:absolute; padding:10px; text-align:center; margin-top:-56px;}
+.common_to_p p{
+text-align:justify;
+line-height:30px;
+font-size:16px;
+}
+.common_to_p ul{margin:0px;padding:0px;}
+.common_to_p ul li{list-style:none; background:url(../images/bullet.png) no-repeat left 4px; padding-left:40px; line-height:26px; margin-bottom:30px; display:block; text-align:justify;}
+.common_to_p h3{
+  font-family:SourceSansProBold, Arial, Tahoma; font-size:30px; color:#333333; margin: 0 0 20px 0; text-align:center;
+}
+/*Footer*/
+.footerBg {background:url(../images/oom-big.png) no-repeat center center #2d1e19; padding:80px 15px;}
+.head30ThinWhite {font-size:30px; color:#fff; margin:0 0 20px 0;}
+.newsletterField {width:30%; background:Transparent; border:1px solid #523a32; color:#927166; padding:10px; border-radius: 5px 0px  0px 5px / 5px 5px 5px 5px;}
+.btnSubscribe {background:Transparent; border:1px solid #523a32; padding:10px; font-family:SourceSansProBold, Arial, Tahoma; color:#fdc465; border-radius: 5px 5px  5px 5px / 0px 5px 5px 0px}
+.btnSubscribe:hover {background:#573e35;}
+.listBotNav {margin:50px 0; padding:0;}
+.listBotNav li {list-style-type:none; display:inline-block; margin:0 20px;}
+.listBotNav li a{color:#fff; font-size:17px;}
+.listBotNav li a:hover{color:#885f51; text-decoration:none;}
+.txtCopyright {color:#885f51; font-size:14px; margin:50px 0 0 0;}
+.lnkCredits {color:#991403;}
+.lnkCredits:hover {color:#fff; text-decoration:none;}
+
+/*SubPage*/
+
+/*Contact Form*/
+
+.head30RegularBrown{ font-family:SourceSansProBold, Arial, Tahoma; font-size:30px; color:#991403; margin:0;}
+.head30RegularBlack{ font-family:SourceSansProBold, Arial, Tahoma; font-size:30px; color:#333333; margin: 0 0 20px 0;}
+.head30BoldBlackCentre{ font-family:SourceSansProBold, Arial, Tahoma; font-size:30px; color:#333333; margin: 0 0 20px 0; text-align:center;}
+.bgOne{ background:#fff; padding-bottom:20px; padding-top:20px;}
+.breadCrumbHome{ margin:0; padding:0; float:right;}
+.breadCrumbHome li{ list-style:none; display:inline; font-size:17px;}
+.breadCrumbHome li a{ font-family:SourceSansProRegular, Arial, Tahoma; font-size:17px; text-decoration:none!important; color:#991403; display:inline-block; outline:none!important;}
+.breadCrumbHome li a:hover{ text-decoration:none!important;}
+.bgContact{ background:url(../images/pattern1.jpg) repeat; padding-bottom:75px; padding-top:27px;}
+.underLine{ margin-bottom:30px;}
+.addressTable td {
+    padding-bottom: 40px;
+    vertical-align: top;
+    color: #342203;
+	line-height:26px;
+	font-size:17px;
+}
+
+	.nameFiled{    background: #fff; border:1px #cbb29a solid;
+    padding: 10px;
+    color: #606060; border-radius:5px; color:#745e49;   font-family:SourceSansProRegular, Arial, Tahoma;
+
+    margin-bottom: 22px; width:100%; font-size:14px;}
+.formField4 {
+    width: calc(100% - 181px); color:#745e49; text-transform:capitalize;
+    background: #fff;
+    padding: 10px;
+	 border-radius:5px;  font-family:SourceSansProRegular, Arial, Tahoma;
+    color: #606060;
+   border:1px #cbb29a solid;
+    margin-bottom: 25px; font-size:14px;
+}
+.btnSend{background: #ffa000;
+    margin-bottom: 25px;
+    width: 100%;
+		 border-radius:5px;
+    font-size: 18px;
+    color: #fff;
+    padding: 10px;
+       border:1px #ffa000 solid; font-family:SourceSansProBold, Arial, Tahoma;   -webkit-transition:all 0.5s ease-out;
+  -moz-transition:all 0.5s ease-out;
+  -ms-transition:all 0.5s ease-out;
+  -o-transition:all 0.5s ease-out;
+  transition:all 0.5s ease-out; }
+.btnSend:hover{ background:none;   border:1px #ffa000 solid; color:#ffa000;}
+.emailAddresss {word-break: break-all;}
+.head22RegularBlack{ font-family:SourceSansProBold, Arial, Tahoma; font-size:30px; color:#333333; margin: 0 0 20px 0; text-align:center;}
+
+
+.imgBgBox5 {width:100%; height:363px; margin-top:0px; background:url(../images/img-box1.jpg) no-repeat center center; background-size:cover; vertical-align:bottom; padding:235px 20px 20px 20px;}
+
+.borderAll{ border:1px #b8a495 solid; margin-top: 30px;
+margin-bottom: 35px;}
+.imgBgBox6 {margin-bottom: 40px; background:url(../images/btnbg.jpg) no-repeat center center; background-size:cover; padding:50px 0; }
+.lnk22YellowDonation{font-size:22px; width:224px; margin:0 auto; outline:none!important; text-decoration:none!important; text-align:center; color:#fff; background:#ffa000; display:block; padding:10px;  font-family:SourceSansProBold, Arial, Tahoma; border-radius:5px; border:2px #ffa000 solid; -webkit-transition:all 0.5s ease-out;
+  -moz-transition:all 0.5s ease-out;
+  -ms-transition:all 0.5s ease-out;
+  -o-transition:all 0.5s ease-out;
+  transition:all 0.5s ease-out; }
+.lnk22YellowDonation:hover{ background:none; border:2px #ffa000 solid; color:#ffa000;}
+
+.btnDownloadBajan{font-size:22px; width:100%; margin-bottom:40px;  outline:none!important; text-decoration:none!important; text-align:center; color:#fff!important; background:#991403; display:block; padding:15px;  font-family:SourceSansProBold, Arial, Tahoma; border:2px #991403 solid; -webkit-transition:all 0.5s ease-out;
+  -moz-transition:all 0.5s ease-out;
+  -ms-transition:all 0.5s ease-out;
+  -o-transition:all 0.5s ease-out;
+  transition:all 0.5s ease-out; }
+.btnDownloadBajan:hover{ background:#ffa000; border:2px #ffa000 solid; color:#fff;}
+.txt17RegularBrown{ color:#342203; line-height:26px; text-align:justify; font-family:SourceSansProRegular, Arial, Tahoma;}
+.subPageBulletPoint{ margin:0; padding:0;}
+.subPageBulletPoint li{ list-style:none; background:url(../images/bullet.png) no-repeat left 4px; padding-left:40px; line-height:26px; margin-bottom:30px; display:block; text-align:justify; }
+
+.dailyTimingTable td {background:#bf2815; font-size:17px; color:#fff; padding:10px 10px 10px 30px;}
+.dailyTimingTable tr.odd td {background:#a62313; font-size:17px; color:#fff;}
+.dailyTimingTable td img {margin-right:10px; vertical-align:middle;}
+.tableWidthOne{ width:70%}
+.tableWidthTwo{ width:30%}
+
+.gallaryImg{ margin-top:20px;    -webkit-transition:all 0.5s ease-out;
+  -moz-transition:all 0.5s ease-out;
+  -ms-transition:all 0.5s ease-out;
+  -o-transition:all 0.5s ease-out;
+  transition:all 0.5s ease-out;}
+.gallaryImg:hover{ opacity:0.6; -webkit-box-shadow: -2px 23px 35px -1px rgba(0,0,0,0.69);
+-moz-box-shadow: -2px 23px 35px -1px rgba(0,0,0,0.69);
+box-shadow: -2px 23px 35px -1px rgba(0,0,0,0.69);}
+.gallerySelectBox{    width:359px; padding:8px; color:#333; border: 1px solid #fff;  background:#fff url(../images/dropdown-btn.png) no-repeat center right;    -webkit-appearance: none;-moz-appearance: none;appearance: none;-ms-appearance: none; -o-appearance: none; font-family:SourceSansProBold, Arial, Tahoma;font-size:14px; color:#342203;   margin-bottom:20px;}
+
+.head20BoldBlack{ font-size:20px; color:#333; min-height: 44px;  font-family:SourceSansProBold, Arial, Tahoma; margin-top:0; margin-bottom:25px; }
+.head20BoldBlack1{ font-size:20px; color:#333; font-family:SourceSansProBold, Arial, Tahoma; margin-top:0; margin-bottom:5px; }
+.dateDiv{background: #bf2815; margin-bottom:25px;
+padding: 2px;
+color: #fff;
+font-size: 17px;
+font-family: SourceSansProRegular, Arial, Tahoma;
+width: 100px;
+display: block;
+text-align: center;  }
+
+.btnViewDeatilYellow {border-radius:5px; width:174px; text-align:center; background:#ffa000; color:#fff!important; margin-top:10px; display:block; outline:none!important; text-decoration:none!important; font-size:14px; padding:10px 50px; border:none; -webkit-transition:all 0.5s ease-out;
+  -moz-transition:all 0.5s ease-out;
+  -ms-transition:all 0.5s ease-out;
+  -o-transition:all 0.5s ease-out;
+  transition:all 0.5s ease-out;}
+.btnViewDeatilYellow:hover { background:#bf2815; color:#fff;}
+.borderNewAll{ border:1px #b8a392 solid; margin:50px 0;}
+
+.txt17RegularBrownNew{ color:#342203; min-height:104px; line-height:26px; text-align:justify; font-family:SourceSansProRegular, Arial, Tahoma;}
+.postedon{color:#bf2815;margin-bottom:20px;display:block}
+
+.dataTableOneAll{background:#bf2815; display:table; width:100%;}
+.dataTableTxtDivOne{display:table-cell; width:70%;
+font-size: 17px;
+color: #fff;
+padding: 10px 10px 10px 30px;}
+.dataTableTxtDivTwo{display:table-cell; width:30%; font-size: 17px;
+color: #fff;
+padding: 10px 10px 10px 30px;}
+.dataTableTwoAll{background:#a62313; display:table; width:100%;}
+.newImg{
+  margin-bottom:20px;
+}
+
+/*2017-12-04*/
+.pointerLeft {content: ''; display: block; width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-right: 15px solid #991403; position: absolute; top: 50%; margin-top: -15px; left: -15px;}
+.pointerRight {content: ''; display: block; width: 0; height: 0; border-top: 15px solid transparent; border-bottom: 15px solid transparent; border-left: 15px solid #ffa000; position: absolute; top: 50%; margin-top: -15px; right: -15px; z-index:10;}
+.accListingBorderBottom {border-color:#bf2815;}
+.btnViewDetails {background:#ffa000; padding:7px 20px; border-radius:7px; border:none; font-family:SourceSansProBold, Arial, Tahoma; font-size:16px; color:#fff;}
+.btnViewDetails:hover {background:#991403;}
+.paginationHolder {text-align:center; margin:10px 0 30px 0;}
+.page {
+    display: inline-block;
+    padding: 0px 9px;
+    margin-right: 4px;
+    border-radius: 3px;
+    border: solid 1px #c0c0c0;
+    background: #e9e9e9;
+    box-shadow: inset 0px 1px 0px rgba(255,255,255, .8), 0px 1px 3px rgba(0,0,0, .1);
+    font-size: .875em;
+    font-weight: bold;
+    text-decoration: none;
+    color: #717171;
+    text-shadow: 0px 1px 0px rgba(255,255,255, 1);
+}
+.page.dark {
+    border: solid 1px #d74d3b;
+    background: #3e4347;
+    box-shadow: inset 0px 1px 1px rgba(255,255,255, .1), 0px 1px 3px rgba(0,0,0, .1);
+    color: #feffff;
+    text-shadow: 0px 1px 0px rgba(0,0,0, .5);
+}
+
+.page.dark:hover, .page.dark.gradient:hover {
+    background: #3d4f5d;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ffa000), to(#c77d00));
+    background: -moz-linear-gradient(0% 0% 270deg,#ffa000, #c77d00);
+}
+
+.page.dark.gradient {
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#991403), to(#5d0b00));
+    background: -moz-linear-gradient(0% 0% 270deg,#991403, #5d0b00);
+}
+.common_to_p .head20BrownBg {background:#991403; display:block; color:#fff; font-size:17px; font-family:SourceSansProBold, Arial, Tahoma; border-radius:5px; padding:10px;text-align:left}
+
+.txtBrownBold {color:#991403; font-weight:bold; }
+.txtRegularDark {color:#342203; font-weight:normal;}
+
+
+#online_donation{
+    float:left;padding:10px 5px;width:135px;margin:20px 5px 20px 0px
+}
+#vazhipadu_booking{
+    float:left;padding:10px 5px;width:205px;margin:20px 5px 20px 0px
+}
+#e_dakshina{
+    float:left;padding:10px 5px;width:100px;margin:20px 5px 20px 0px
+}
+
+
+@media (max-width: 1312px) {
+.templeNewsHolder {min-height:180px;}
+.donationHolder {min-height:180px;}
+.listTiming li {
+    display: inline-block;
+    width: 100%;
+}
+.darsanArrow {
+    display: none;
+}
+}
+
+@media (max-width: 1200px) {
+.logoAlign {margin:10px auto 0 auto;}
+.listMainNav li a{padding: 12px 8px; font-size:14px;}
+.head22BoldWhiteMargin15 {font-size:16px;}
+.txt14White {font-size:12px;}
+.txt20Yellow {font-size:14px;}
+.accommodationTextWrapper {margin-top:-68px;}
+.lnk22YellowDonation{ width:90%;}
+.txtBannerContent { font-size:36px;}
+.listTiming li {
+    display: inline-block;
+    width: 100%;
+}
+.darsanArrow {
+    display: none;
+}
+}
+
+@media (max-width: 992px) {
+.logoAlign {margin:20px auto 0 auto;}
+.listMainNav li a{padding:13px 3px; font-size:12px;}
+.txtBannerContent {top:30%; font-size:36px;}
+.downloadArrow {display:none;}
+.txt14White {font-size:14px;}
+.txt20Yellow {font-size:20px;}
+.accommodationTextHolder {width:100%; float:none; padding:10px; border-bottom:1px solid #ccc;}
+.accommodationTextWrapper {width:100%; height:inherit; margin-top:0; z-index:10; position:static; }
+.head17RegularWhitBg{margin-top: -6px; font-size: 14px;  position:static;}
+.head22RegularBlack{font-size: 20px;}
+.head30BoldBlackCentre{font-size: 20px;}
+.head30RegularBrown{font-size: 20px;}
+.lnk22YellowDonation{ font-size:15px;}
+.btnDownloadBajan{ font-size:15px;}
+.head30ThinWhite{ font-size:20px;}
+.txtBannerContent { font-size:30px;}
+.scroll-btn{ display:none;}
+.head20BoldBlack{ min-height:0px; margin-top:25px;}
+.txt17RegularBrownNew{ min-height:0px; margin-bottom:25px;}
+.listTiming li {
+    display: inline-block;
+    width: 100%;
+}
+.darsanArrow {
+    display: none;
+}
+}
+
+/* Landscape tablets and medium desktops */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .listTiming li {
+      display: inline-block;
+      width: 100%;
+  }
+  .darsanArrow {
+      display: none;
+  }
+}
+
+/* Portrait tablets and small desktops */
+@media (min-width: 768px) and (max-width: 991px) {
+
+}
+@media (max-width: 771px) {
+  .darsanTimeImg {width:150px; margin-right:10px;}
+  .darsanTimeImg2 {width:240px; height:32px}
+.listTiming li {
+    display: inline-block;
+    width: 100%;
+}
+.darsanArrow {
+    display: none;
+}
+}
+/* Landscape phones and portrait tablets */
+@media (max-width: 767px) {
+.logoAlign {display:block; margin:10px auto;}
+.btnVazhipadu {margin:0 auto 20px auto; float:none; display:block;}
+.listMainNav {display:none;}
+.scroll-btn {display:none;}
+.narayanaTextAlign {margin-top:0px;}
+.head22BoldWhiteMargin15 {font-size:24px;}
+.headDownload {width:250px;}
+.head17RegularWhitBg{width: 265px;
+margin: 0px auto;}
+.head22RegularBlack{font-size: 25px;}
+.head30BoldBlackCentre{font-size: 25px;}
+.head30RegularBrown{font-size: 25px;}
+.lnk22YellowDonation{ font-size:20px;}
+.btnDownloadBajan{ font-size:20px;}
+.head30ThinWhite{ font-size:25px;}
+.txtBannerContent { display:none;}
+.gallerySelectBox{width:100%; margin:0 auto 50px;}
+.dataTableTxtDivOne{ width:50%;}
+.dataTableTxtDivTwo{ width:auto;padding:0 0 0 10px}
+/*2017-12-04*/
+.pointerLeft {content: ''; display: block; width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 15px solid #991403; position: absolute; top: -30px; margin-top: 0; left:50%; margin-left:-15px; z-index:10;}
+.pointerRight {content: ''; display: block; width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 15px solid #ffa000 ; position: absolute; bottom: -30px; top:inherit; margin-bottom: 0; left:50%; margin-left:-15px; z-index:10;}
+}
+
+/* Portrait phones and smaller */
+@media (max-width: 480px) {
+.txtBannerContent {top:20%; font-size:24px;}
+/*Footer*/
+.newsletterField {width:60%;}
+.listBotNav li {margin:0 10px;}
+.head30RegularBrown{ font-size:22px;}
+.formField4{font-size:11px;}
+.head17RegularWhitBg{width: 259px;
+}
+.tableWidthOne{ width:50%}
+.tableWidthTwo{ width:50%}
+.dailyTimingTable td img{display:none;}
+.head30RegularBrown{font-size: 17px;}
+.breadCrumbHome li{ font-size:13px;}
+.breadCrumbHome li a{ font-size:13px;}
+.head22RegularBlack{font-size: 20px;}
+.head30BoldBlackCentre{font-size: 20px;}
+.head30RegularBrown{font-size: 20px;}
+.lnk22YellowDonation{ font-size:15px;}
+.btnDownloadBajan{ font-size:15px;}
+.head30ThinWhite{ font-size:20px;}
+.templeNewsHolder {min-height:auto!important;}
+.donationHolder{ min-height:0px;}
+
+#online_donation{
+   width:100%;
+   margin:5px 0px;
+}
+#vazhipadu_booking{
+    width:100%;
+    margin:5px 0px;
+}
+#e_dakshina{
+    width:100%;
+    margin:5px 0px;
+}
+
+}
+
+@media (max-width: 426px) {
+.darsanArrow {display:none;}
+#online_donation{
+   width:100%;
+   margin:5px 0px;
+}
+#vazhipadu_booking{
+    width:100%;
+    margin:5px 0px;
+}
+#e_dakshina{
+    width:100%;
+    margin:5px 0px;
+}
+}

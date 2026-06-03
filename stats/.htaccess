@@ -1,0 +1,7 @@
+AuthName "mookkuthalabhagavathitemple.com statistics"
+AuthType Basic
+AuthUserFile /home/mookkuthalabhagavathitemple/.stats-htpasswd
+require valid-user
+<Files .stats-htpasswd>
+deny from all
+</Files>

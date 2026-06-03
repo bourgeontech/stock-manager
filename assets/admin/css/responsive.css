@@ -1,0 +1,212 @@
+@charset "utf-8";
+
+/* CSS Document */
+
+@media only screen and (max-width: 1400px) {
+}
+
+@media only screen and (min-width: 1201px) and (max-width: 1400px) {
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1200px) and (orientation: landscape) {
+}
+
+@media only screen and (max-width: 768px) and (orientation: landscape) {
+}
+
+/* iPads (portrai) ----------- */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+}
+
+@media screen and (min-width: 768px) {
+.sm-location {
+    background: #fff;
+    position: relative;
+    top: 15px;
+}
+.dash_word {
+    display: flex
+}
+.quatation_ul {
+    display: flex;
+}
+.luca_head .btn {
+    position: absolute;
+    right: 27px;
+    top: 20px;
+}
+.quatation_ul li.proj_name {
+    width: 498px
+}
+.markering .client_dltsul {
+    display: flex;
+}
+/*.side_left { position:absolute; left:0; width:20%; height:100%}
+.side_right { width:80% !important; margin-left:20%; }*/
+.attraction_list {
+    min-height: 322px;
+}
+.shop-name, .dist {
+    width: 25%
+}
+}
+
+@media only screen and (max-width: 996px) and (orientation: landscape) {
+}
+
+@media only screen and (max-width: 996px) {
+.work_count {
+    display: block !important
+}
+.work_count li {
+    padding: 7px 0 !important;
+    width: 50% !important;
+    float: left
+}
+.comp_dp {
+    background: #5897fb;
+    width: 70px;
+    height: 70px;
+    color: #fff;
+    text-align: center;
+    font-size: 26px;
+    line-height: 76px;
+    margin: 0 auto 20px auto;
+}
+.dp_row > li {
+    border: none;
+    border-bottom: 1px solid #f1f1f1;
+    padding-bottom: 11px;
+    padding-top: 17px;
+}
+.project.work_count li:last-child {
+    width: 100%;
+    margin-left: 0px;
+}
+}
+
+/* Desktops, Large Screen and laptops ----------- */
+@media only screen and (max-width: 790px) {
+.shop_brand img {
+    width: 100%
+}
+.shop_brand_col {
+    width: 100% !important
+}
+.shop_brand_col, .shop_login {
+    width: 100%;
+    float: left;
+    position: inherit !important;
+}
+.shop_brand_col .shop_brand {
+    position: inherit !important;
+}
+.shop_brand_col, .shop_login {
+    width: 100%;
+    float: left;
+}
+.bran_logo img {
+    width: 100%
+}
+.shop_login {
+    padding: 44px 15px;
+}
+.side_left {
+    display: none
+}
+.nav_body {
+    position: inherit !important
+}
+.cp_col {
+    display: block !important;
+}
+.subxms {
+    display: block !important
+}
+.form_body .sq_form {
+    width: 100%
+}
+ 
+.dash_word li {
+    width: 47% !important;
+    float: left !important
+}
+.row_form {
+    display: block !important
+}
+.leave_count li {
+    border: none;
+    margin: 5px;
+    border: 1px solid #eee;
+    width: 46% !important;
+}
+.btn_back {
+    position: inherit
+}
+.quatation_ul li {
+    padding: 6px 0;
+    float: left;
+    width: 50%
+}
+.markering .client_dltsul li {
+    border-bottom: 1px solid #efefef;
+    padding: 20px 0;
+    float: left;
+    width: 100%
+}
+.mark_executive {
+    margin-bottom: 15px;
+}
+/*.select2-container { width:100% !important }*/
+ 
+.ul_barcode li img {
+	width:100% !important;}
+	
+}
+ 
+}
+
+@media only screen and (min-width: 320px) and (max-width: 570px) and (orientation: landscape) {
+}
+
+@media only screen and (min-width: 320px) and (max-width: 570px) and (orientation: portrait) {
+}
+
+/* iPhone 4 & 5 (portrait & landscape)----------- */
+@media only screen and (min-width: 570px) and (max-width: 750px) {
+}
+
+@media only screen and (min-width: 320px) and (max-width: 570px) {
+}
+
+/*@media only screen and (max-width : 480px) {
+ 
+		
+}*/
+ 
+@media screen and (max-width: 460px) {
+.dash_word li {
+    width: 100% !important;
+}
+.row_form input[type="file"] {
+    font-size: 10px !important;
+}
+.leave_count li {
+    width: 100% !important;
+}
+.quatation_ul li {
+    padding: 6px 0;
+    float: left;
+    width: 100%
+}
+.dash_menu {
+    width: 47% !important
+}
+}
+
+@media screen and (min-width: 760px) {
+}

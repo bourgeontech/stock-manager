@@ -1,0 +1,451 @@
+<style>
+	.table td{
+    	height:1.5cm;
+	}
+</style>
+<div class="side_right">
+    <div class="mt-2"></div>
+    <div class="clearfix"></div>
+    <div class="page-header">
+        <div class="col-lg-6 col-md-6 col-sm-6 ">
+          <h2 class="page_txt"> Accounts Management </h2>
+        </div>
+        
+    </div>
+       <div class="row">
+	     <div class="col-lg-12 col-md-12 col-sm-12 ">
+		  <div class="shadow-sm p-3 mb-2 bg-white" style="position:relative" >
+			<div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-6 ">
+                <h2 class="page_txt"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbsp;&nbsp;Cash Book Between Two Days</h2>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6 ">
+        <div class="header" hidden>
+  <div class="header-right">
+  <a href="<?php echo base_url();?>index.php/accounts/report" class="btn btn btn-outline-secondary" style="font-size: 18px;"><i class="fa fa-list-ul" aria-hidden="true"></i> View All</a>
+        
+  <!-- <a href="<?php echo base_url();?>index.php/accounts/exportReportExcel" class="btn btn btn-outline-success" style="font-size: 18px;"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel</a> -->
+  
+   </div>
+   </div>
+        </div>
+			 </div>	
+       <br>
+       
+       <div class="row">
+	     <div class="col-lg-12 col-md-12 col-sm-12 ">
+		  <div class="shadow-sm p-3 mb-2 bg-white" style="position:relative" >
+					
+
+<!-- SEARCH -->
+
+<div class="row">
+	
+			  
+			  <div class="col-lg-6 col-md-6 col-sm-6 ">
+                  <form action="<?php echo base_url();?>index.php/accounts/cashbook_twodays" method="post">
+                  <div class="input-group mb-3">
+				  <input type="date" class="form-control" name="date" value="<?php if (isset($date)){ echo $date;}else{ echo date('Y-m-d');}?>" required placeholder="Search By Date">
+				  <input type="date" class="form-control" name="dateto" value="<?php if (isset($dateto)){ echo $dateto;}else{ echo date('Y-m-d');}?>" required placeholder="Search By Date">
+                      
+                  <select name="sortby" id="sortby" class="form-control">
+				   <option value="payment_date" <?php if(@$_POST['sortby']=="payment_date") { ?> selected <?php } ?>>Order by :Payment Date</option>
+				   <option value="voucher_no" <?php if(@$_POST['sortby']=="voucher_no") { ?> selected <?php } ?>>Order by :Voucher No</option>
+				   </select>
+                  <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit" name="search"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        <button class="btn btn-outline-secondary" type="submit" name="search" value="print"><i class="fa fa-print" aria-hidden="true"></i></button>
+ 						<button class="btn btn-outline-secondary" type="submit" name="search" value="excel"><i class="fa fa-file" aria-hidden="true"></i></button>
+                  	</div>
+                    </div>
+                    </form>
+			  </div>
+               
+             
+			  
+			 </div>	<br><br>
+
+     <?php
+     $site_settings 	= $this->db->select('*')->from('site_settings')->get()->row();
+     $language_settings = $this->db->field_exists('language', 'site_settings');
+ 
+          
+     $search_date=$date;
+     if($search_date==""){
+         $search_date=date('Y-m-d');
+     }
+     $convertDate = date("Y-m-d", strtotime($search_date));
+     $search_dateto=$dateto;
+     if($search_dateto==""){
+         $search_dateto=date('Y-m-d');
+     }
+     $convertDateto = date("Y-m-d", strtotime($search_dateto));
+
+     $payment = $this->db->query("SELECT sum(payment.amount) as payment,ledger.* FROM `payment` Join ledger On payment.mode=ledger.led_Id WHERE `group`='2' AND payment.is_delete!=1 AND `payment_date` < '$convertDate' and `type`='1'")->row_array();
+  
+     $pay=$payment['payment'];
+    
+
+        $receipt = $this->db->query("SELECT sum(payment.amount) as receipt,ledger.* FROM `payment` Join ledger On payment.mode=ledger.led_Id WHERE `group`='2' AND payment.is_delete!=1 AND `payment_date` < '$convertDate' and `type`='2'")->row_array();
+        $rec=$receipt['receipt'];
+          
+    $open_cash=$rec-$pay;
+    
+    $payment1 = $this->db->query("SELECT sum(payment.amount) as payment,ledger.* FROM `payment` Join ledger On payment.mode=ledger.led_Id WHERE `group`='3' AND payment.is_delete!=1 AND `payment_date` < '$convertDate' and `type`='1'")->row_array();
+    
+    $pay1=$payment1['payment'];
+    
+    
+    $receipt1 = $this->db->query("SELECT sum(payment.amount) as receipt,ledger.* FROM `payment` Join ledger On payment.mode=ledger.led_Id WHERE `group`='3' AND payment.is_delete!=1 AND `payment_date` < '$convertDate' and `type`='2'")->row_array();
+    $rec1=$receipt1['receipt'];
+    
+    $open_bank=$rec1-$pay1;
+        
+
+//TOTAL DEBIT & CREDIT
+
+$payment = $this->db->query("SELECT sum(amount) as payment FROM `payment` WHERE `payment_date` = '$convertDate' and type='1'")->result_array();
+  
+          foreach($payment as $val){ 
+          $total_debit=$val['payment'];
+        }
+
+     $receipt = $this->db->query("SELECT sum(amount) as receipt FROM `payment` WHERE `payment_date` = '$convertDate' and type='2'")->result_array();
+  
+          foreach($receipt as $val){ 
+          $total_credit=$val['receipt'];
+        }
+          $sortby=@$sortby ? $sortby:"payment_date";
+        $this->db->select('payment.*,ledger.*,ledger.name_mal as led_mal,ledger.name as ledger_name,payment.voucher_no as voucher_no, payment.payment_date as date');
+        $this->db->from('payment');
+        $this->db->join('ledger', 'ledger.led_Id = payment.ledger');
+       // $this->db->join('ledger_group', 'ledger_group.group_id = ledger.group');
+        $this->db->where("payment.payment_date BETWEEN '$convertDate' AND '$convertDateto'");
+        $this->db->where('payment.type', 2);
+        $this->db->where('payment.is_delete !=', 1);
+        if($sortby=='payment_date')
+		{
+		$this->db->order_by($sortby, 'asc');
+		}
+		else
+		{
+        $this->db->order_by(
+    	"CAST(SUBSTRING_INDEX(payment.voucher_no, '/', 1) AS UNSIGNED)",
+    	"ASC",
+    	FALSE
+		);
+		}
+        //$this->db->order_by('payment.pay_Id', 'asc');
+        $query2 = $this->db->get()->result_array();
+        
+        $this->db->select('payment.*,ledger.*,ledger.name_mal as led_mal,ledger.name as ledger_name,payment.voucher_no as voucher_no, payment.payment_date as date');
+        $this->db->from('payment');
+        $this->db->join('ledger', 'ledger.led_Id = payment.ledger');
+    //    $this->db->join('ledger_group', 'ledger_group.group_id = ledger.group');
+        $this->db->where("payment.payment_date BETWEEN '$convertDate' AND '$convertDateto'");
+        $this->db->where('payment.type', 1);
+        $this->db->where('payment.is_delete !=', 1);
+        if($sortby=='payment_date')
+		{
+		$this->db->order_by($sortby, 'asc');
+		}
+		else
+		{
+        $this->db->order_by(
+    	"CAST(SUBSTRING_INDEX(payment.voucher_no, '/', 1) AS UNSIGNED)",
+    	"ASC",
+    	FALSE
+		);
+		}
+        //$this->db->order_by('payment.pay_Id', 'asc');
+        $query3 = $this->db->get()->result_array();
+        
+        $count=count($query2);
+        $count1=count($query3);
+	$bankledgers = $this->db->query("SELECT * FROM `ledger` WHERE  `group`='3' and is_delete='0'")->result_array();
+		
+
+   ?>
+          
+          
+			<div id="printer">
+                <div class="row">
+                	<div class="col-lg-12 col-md-12 col-sm-12 ">
+                    	<div style="width:100%;"><h4 style="text-align:center;"><?php print_r($temple_list[0]['name']);?><br>
+                			Cash Book From Date <?php if (isset($date)){echo date('d-m-Y',strtotime($date));};?> to <?php if (isset($dateto)){echo date('d-m-Y',strtotime($dateto));};?></h4>
+                		</div>		
+                	</div>
+                	<div class="col-md-6 col-sm-6 ">
+                		<div class="table-responsive">
+                			<table class="table table-hover srp_table" width="100%" border="1" id="table">
+                				<thead>
+                    				<tr>
+                    					<th colspan="9" style="text-align: center;"> <?php echo $this->lang->line('income'); ?> </th>
+                    				</tr>
+                    				<tr>
+                    			    	<th scope="col" width="">R. No</th>
+                                    
+                    			    	<th scope="col" width="">Date</th>
+                    			    	<th scope="col" width=""> <?php echo $this->lang->line('item_details'); ?> </th>
+                    			    	<th scope="col" width=""> <?php echo $this->lang->line('cash'); ?>&nbsp; </th>
+                    			    	<th scope="col" width=""> <?php echo $this->lang->line('bank'); ?> &nbsp; </th>
+                    		    	</tr>
+                		    	</thead>
+                		    	<tbody>
+                		    		<tr>
+                		    			<td></td>
+                                    	<td><?php if (isset($date)){echo date('d/m/Y',strtotime($date));};?></td>
+                		    			<td>CASH/BANK OPENING BALANCE(<?php if (isset($date)){echo date('d/m/Y',strtotime($date));};?>)</td>
+                		    			<td style="text-align: right;"><?php echo (number_format($open_cash, 2, '.', '')); ?></td>
+                		    			<td style="text-align: right;"><?php echo (number_format($open_bank, 2, '.', '')); ?></td>
+                	    			</tr>
+									<?php
+if($this->db->field_exists('cashbook', 'site_settings')){									
+$btot3=array();
+
+									foreach($bankledgers as $val){
+										$payment1 = $this->db->query("SELECT sum(payment.amount) as payment,ledger.* FROM `payment` Join ledger On payment.mode=ledger.led_Id WHERE ledger.led_Id='$val[led_Id]' AND payment.is_delete=0 AND payment.payment_date < '$convertDate'  and `type`='1'")->row_array();
+    
+         // print "SELECT sum(payment.amount) as payment,ledger.* FROM `payment` Join ledger On payment.mode=ledger.led_Id WHERE `group`='3' AND payment.is_delete=0 AND `payment_date` < '$convertDate' and `type`='1'";
+    $pay1=$payment1['payment'];
+    
+    
+    $receipt1 = $this->db->query("SELECT sum(payment.amount) as receipt,ledger.* FROM `payment` Join ledger On payment.mode=ledger.led_Id WHERE ledger.led_Id='$val[led_Id]' AND payment.is_delete=0 AND payment.payment_date < '$convertDate' and `type`='2'")->row_array();
+    $rec1=$receipt1['receipt'];
+    
+    $open_banknew=$rec1-$pay1;
+	
+									$b_tot3[$val['led_Id']]=$open_banknew;
+										?>
+									<tr>
+                		    			<td></td>
+										<td><?php if (isset($date)){echo date('d/m/Y',strtotime($date));};?></td>
+									<td><?php echo $val['name'];?>  OPENING BALANCE(<?php if (isset($date)){echo date('d/m/Y',strtotime($date));};?>)</td>
+                		    			<td style="text-align: right;">&nbsp;</td>
+                		    			<td style="text-align: right;"><?php echo (number_format($open_banknew, 2, '.', '')); ?></td>
+                	    			</tr>
+<?php } } ?>
+                	    			<?php 
+                	    			$i=0;
+                	    			$c_tot=0;
+                	    			$b_tot=0;
+                	    			$c_tot=$c_tot+$open_cash;
+                	    			$b_tot=$b_tot+$open_bank;
+                	    			foreach ($query2 as $val){
+                	    			    $mode=$val['mode'];
+                	    			    $this->db->select('group');
+                	    			    $this->db->from('ledger');
+                	    			    $this->db->where('led_Id', $mode);
+                	    			    $query1 = $this->db->get()->row_array();
+                	    			    if ($query1['group']=='2'){
+                	    			        $cash=$val['amount'];
+                	    			        $bank="0";
+                	    			        $c_tot=$c_tot+$cash;
+                	    			    }elseif ($query1['group']=='3'){
+                	    			        $bank=$val['amount'];
+                	    			        $cash="0";
+                	    			        $b_tot=$b_tot+$bank;
+                	    			    }
+                	    			    ?>
+                	    			    <tr>
+                                        	<td><?php echo $val['voucher_no']?></td>
+                                        	<td><?php if (isset($val['date'])){echo date('d/m/Y',strtotime($val['date']));};?></td>
+                	    			    	<td style="white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;width:300px;">> 
+                                            <?php 
+                                        		if($language_settings && $site_settings->language != null) {
+                									if($site_settings->language == 'en') { 
+                                            			echo $val['ledger_name'];
+                                            		} else { 
+                                                    	echo $val['led_mal']; 
+                                                    }
+                                                } 
+                                            ?>
+                                            <br><?php echo $val['narration']?></td>
+                	    			    	<td style="text-align: right;"><?php echo (number_format($cash, 2, '.', ''));?></td>
+                	    			    	<td style="text-align: right;"><?php echo (number_format($bank, 2, '.', ''));?></td>
+                	    			    </tr>
+                	    			    <?php
+                	    			}
+                	    			if ($count<$count1){
+                	    			    $diff=abs($count - $count1);
+                	    			    for ($i=0;$i<$diff;$i++){
+                	    			        echo '<tr><td>#</td><td></td><td></td><td></td></tr>';
+                	    			    }
+                	    			}
+                	    			?>
+                	    			<tr>
+                	    				<td></td>
+                                    	<td></td>
+                	    				<td> <?php echo $this->lang->line('total'); ?> </td>
+                	    				<td style="text-align: right;"><?php echo (number_format($c_tot, 2, '.', ''));?></td>
+                	    				<td style="text-align: right;"><?php echo (number_format($b_tot, 2, '.', ''));?></td>
+                	    			</tr>
+                	    			<tr>
+                	    				<td>#</td>
+                                    	<td></td>
+                		    			<td></td>
+                		    			<td></td>
+                		    			<td></td>
+                	    			</tr>
+                	    			<tr>
+                	    				<td></td>
+                                    	<td></td>
+                	    				<td> <?php echo $this->lang->line('total'); ?> </td>
+                	    				<td style="text-align: right;"><?php echo (number_format($c_tot, 2, '.', ''));?></td>
+                	    				<td style="text-align: right;"><?php echo (number_format($b_tot, 2, '.', ''));?></td>
+                	    			</tr>
+                		    	</tbody>
+                			</table>
+                		</div>
+                	</div>
+                	<div class="col-md-6 col-sm-6">
+                		<div class="table-responsive">
+                			<table class="table table-hover srp_table" width="100%" border="1" id="table">
+                				<thead>
+                    				<tr>
+                    					<th colspan="9" style="text-align: center;"> <?php echo $this->lang->line('expense'); ?> </th>
+                    				</tr>
+                    				<tr>
+                    			    	<th scope="col" width="">Vr. No</th>
+                                    
+                    			    	<th scope="col" width="">Date</th>
+                    			    	<th scope="col" width=""> <?php echo $this->lang->line('item_details'); ?> </th>
+                    			    	<th scope="col" width=""> <?php echo $this->lang->line('cash'); ?> </th>
+                    			    	<th scope="col" width=""> <?php echo $this->lang->line('bank'); ?> </th>
+                    		    	</tr>
+                		    	</thead>
+                		    	<tbody>
+                		    		<tr>
+                		    			<td>#</td>
+                                    	<td></td>
+                		    			<td></td>
+                		    			<td></td>
+                		    			<td></td>
+                		    		</tr>
+                	    			<?php 
+                	    			$i=0;
+                	    			$c_tot1=0;
+                	    			$b_tot1=0;
+                	    			foreach ($query3 as $val){
+                	    			    $mode=$val['mode'];
+                	    			    $this->db->select('group');
+                	    			    $this->db->from('ledger');
+                	    			    $this->db->where('led_Id', $mode);
+                	    			    $query1 = $this->db->get()->row_array();
+                	    			    if ($query1['group']=='2'){
+                	    			        $cash=$val['amount'];
+                	    			        $bank="0";
+                	    			        $c_tot1=$c_tot1+$cash;
+                	    			    }elseif ($query1['group']=='3'){
+                	    			        $bank=$val['amount'];
+                	    			        $cash="0";
+                	    			        $b_tot1=$b_tot1+$bank;
+                	    			    }
+                	    			    ?>
+                	    			    <tr>
+                                        	<td><?php echo $val['voucher_no'];?></td>
+                                        	<td><?php if (isset($val['date'])){echo date('d/m/Y',strtotime($val['date']));};?></td>
+                	    			    	<td style="white-space: normal;
+  word-wrap: break-word;
+  word-break: break-word;width:300px;">>
+                                            <?php 
+                                        		if($language_settings && $site_settings->language != null) {
+                									if($site_settings->language == 'en') { 
+                                            			echo $val['ledger_name'];
+                                            		} else { 
+                                                    	echo $val['led_mal']; 
+                                                    }
+                                                } 
+                                            ?>
+                                            <br><?php echo $val['narration']?>&nbsp; </td>
+                	    			    	<td style="text-align: right;"><?php echo (number_format($cash, 2, '.', ''));?>&nbsp;</td>
+                	    			    	<td style="text-align: right;"><?php echo (number_format($bank, 2, '.', ''));?>&nbsp;</td>
+                	    			    </tr>
+                	    			    <?php
+                	    			}
+                	    			if ($count>$count1){
+                	    			    $diff=abs($count - $count1);
+                	    			    for ($i=0;$i<$diff;$i++){
+                	    			      echo '<tr><td>#</td><td></td><td></td><td></td><td></td></tr>';
+                	    			    }
+                	    			}
+                	    			?>
+                	    			<tr>
+                	    				<td></td>
+                                    	<td></td>
+                	    				<td> <?php echo $this->lang->line('total'); ?> </td>
+                	    				<td style="text-align: right;"><?php echo (number_format($c_tot1, 2, '.', ''));?></td>
+                	    				<td style="text-align: right;"><?php echo (number_format($b_tot1, 2, '.', ''));?></td>
+                	    			</tr>
+                	    			<tr>
+                		    			<td></td>
+                                    	<td><?php if (isset($dateto)){echo date('d/m/Y',strtotime($dateto));};?></td>
+                		    			<td>CASH/BANK CLOSING BALANCE(<?php if (isset($dateto)){echo date('d/m/Y',strtotime($dateto));};?>)</td>
+                		    			<td style="text-align: right;"><?php echo (number_format($c_tot-$c_tot1, 2, '.', ''));?></td>
+                		    			<td style="text-align: right;"><?php echo (number_format($b_tot-$b_tot1, 2, '.', ''))?></td>
+                	    			</tr>
+											<?php
+											if($this->db->field_exists('cashbook', 'site_settings')){
+									foreach($bankledgers as $val)
+									{
+									$this->db->select('payment.*,ledger.*,ledger.name_mal as led_mal,ledger.name as ledger_name,payment.voucher_no as voucher_no1, payment.ref_no as ref_no');
+        $this->db->from('payment');
+        $this->db->join('ledger', 'ledger.led_Id = payment.ledger');
+        $this->db->order_by("payment.pay_Id", "asc");
+      //  $this->db->join('ledger_group', 'ledger_group.group_id = ledger.group');
+        $this->db->where('payment.payment_date BETWEEN "'.$convertDate.'" AND "'.$convertDateto.'"');
+        $this->db->where('payment.type', 1);
+		$this->db->where('ledger.led_Id', $val['led_Id']);
+        $this->db->where('payment.is_delete !=', 1);
+        $this->db->order_by("payment.pay_Id", "asc");
+        $query5 = $this->db->get()->result_array();
+		
+		$b_tot5=0;
+		$bank1=0;
+		foreach($query5 as $val1)
+		{
+		$bank1=$val1['amount'];
+                	    			        
+                	    			        $b_tot5=$b_tot5+$bank1;	
+		}
+							?>
+<tr><td></td>
+                		    			<td><?php if (isset($dateto)){echo date('d/m/Y',strtotime($dateto));};?></td>
+                		    			<td> <?php echo $val['name'];?> CLOSING BALANCE(<?php if (isset($date)){echo date('d/m/Y',strtotime($date));};?>)</td>
+                		    			<td style="text-align: right;">&nbsp;</td>
+                		    			<td style="text-align: right;"><?php echo (number_format($b_tot3[$val['led_Id']]-$b_tot5, 2, '.', ''))?></td>
+                	    			</tr>
+											<?php } }?>	
+                	    			<tr>
+                	    				<td></td>
+                                    	<td></td>
+                	    				<td></td>
+                	    				<td style="text-align: right;"><?php echo (number_format($c_tot, 2, '.', ''));?></td>
+                	    				<td style="text-align: right;"><?php echo (number_format($b_tot, 2, '.', ''));?></td>
+                	    			</tr>
+                		    	</tbody>
+                			</table>
+                		</div>
+                	</div>
+                </div>
+                </div>
+             </div>
+			</div> 
+          </div>
+	    </div>
+       </div>
+	</div>
+    <div class="clearfix"></div>
+    <br>
+<script>
+function printcontend(value) {
+	var restorpage=document.body.innerHTML;
+	var printcontend=document.getElementById(value).innerHTML;
+	document.body.innerHTML=printcontend;
+	window.print();
+	document.body.innerHTML=restorpage;
+}
+
+</script>

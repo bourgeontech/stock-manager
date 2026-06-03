@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>News & Events – Aai Tulja Bhavani Mandir</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── NEWS PAGE ── */
+.news-layout { display:grid; grid-template-columns:1fr 320px; gap:40px; align-items:start; }
+
+/* Featured article */
+.news-featured { background:var(--white); border-radius:var(--r); overflow:hidden; border:1px solid rgba(201,147,10,.2); box-shadow:var(--sh-warm); margin-bottom:28px; }
+.nf-img { width:100%; aspect-ratio:16/7; object-fit:cover; }
+.nf-body { padding:28px; }
+.nf-tag { display:inline-block; background:var(--saffron); color:#fff; font-size:.65rem; letter-spacing:.12em; text-transform:uppercase; padding:3px 10px; border-radius:3px; margin-bottom:10px; font-weight:700; }
+.nf-title { font-family:'Cinzel Decorative',serif; font-size:clamp(1.1rem,2.5vw,1.5rem); color:var(--maroon); line-height:1.25; margin-bottom:10px; }
+.nf-meta { font-size:.72rem; color:var(--text-light); letter-spacing:.06em; margin-bottom:12px; }
+.nf-excerpt { font-size:.88rem; line-height:1.8; color:var(--text-mid); }
+
+/* News grid */
+.news-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.news-card { background:var(--white); border-radius:var(--r-sm); overflow:hidden; border:1px solid rgba(201,147,10,.18); box-shadow:var(--sh-card); transition:transform .2s,box-shadow .2s; }
+.news-card:hover { transform:translateY(-3px); box-shadow:var(--sh-warm); }
+.nc-img { width:100%; aspect-ratio:16/9; object-fit:cover; background:linear-gradient(135deg,var(--gold-pale),#ffe0a0); display:flex; align-items:center; justify-content:center; font-size:2.5rem; }
+.nc-body { padding:14px; }
+.nc-tag { font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--gold); font-weight:700; margin-bottom:4px; }
+.nc-title { font-family:'Cinzel',serif; font-size:.84rem; color:var(--maroon); line-height:1.35; margin-bottom:5px; }
+.nc-date { font-size:.7rem; color:var(--text-light); margin-bottom:7px; }
+.nc-excerpt { font-size:.74rem; color:var(--text-mid); line-height:1.55; }
+
+/* Sidebar */
+.sidebar-box { background:var(--white); border:1px solid rgba(201,147,10,.2); border-radius:var(--r); padding:20px; margin-bottom:20px; box-shadow:var(--sh-card); }
+.sb-title { font-family:'Cinzel',serif; font-size:.82rem; letter-spacing:.1em; color:var(--maroon); border-bottom:1.5px solid rgba(201,147,10,.25); padding-bottom:8px; margin-bottom:14px; }
+.sb-item { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid rgba(201,147,10,.1); align-items:center; }
+.sb-item:last-child { border:none; }
+.sb-thumb { width:54px; height:40px; border-radius:5px; object-fit:cover; flex-shrink:0; background:var(--gold-pale); display:flex; align-items:center; justify-content:center; font-size:1.3rem; }
+.sb-info .sb-ititle { font-family:'Cinzel',serif; font-size:.74rem; color:var(--maroon); margin-bottom:2px; line-height:1.3; }
+.sb-info .sb-idate { font-size:.67rem; color:var(--text-light); }
+
+/* Upcoming events list */
+.ev-list-item { display:flex; gap:14px; padding:12px 0; border-bottom:1px solid rgba(201,147,10,.12); align-items:flex-start; }
+.ev-list-item:last-child { border:none; }
+.ev-date-box { background:linear-gradient(135deg,var(--saffron),var(--saffron-lt)); color:#fff; border-radius:var(--r-sm); padding:7px 10px; text-align:center; flex-shrink:0; min-width:46px; }
+.ev-date-box .ev-day { font-family:'Cinzel Decorative',serif; font-size:1.1rem; line-height:1; }
+.ev-date-box .ev-month { font-size:.6rem; letter-spacing:.1em; opacity:.9; text-transform:uppercase; }
+.ev-list-info .ev-list-title { font-family:'Cinzel',serif; font-size:.8rem; color:var(--maroon); margin-bottom:3px; }
+.ev-list-info .ev-list-desc { font-size:.72rem; color:var(--text-light); line-height:1.5; }
+
+/* Announce banner */
+.announce-bar { background:linear-gradient(135deg,var(--maroon-deep),var(--maroon)); color:var(--gold-pale); padding:20px 24px; border-radius:var(--r); margin-bottom:20px; }
+.announce-bar h4 { font-family:'Cinzel',serif; font-size:.84rem; color:var(--gold-lt); margin-bottom:6px; letter-spacing:.08em; }
+.announce-bar p { font-size:.78rem; opacity:.85; line-height:1.6; }
+
+/* Load more */
+.load-more-wrap { text-align:center; margin-top:28px; }
+
+@media(max-width:860px){
+  .news-layout { grid-template-columns:1fr; }
+  .news-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span>🕉️ जय तुळजाभवानी 🕉️</span>
+    <span class="topbar-sep">|</span>
+    <span>📞 9822535654 / 8788097975</span>
+    <span class="topbar-sep">|</span>
+    <a href="https://shrituljabhavaniparas.org/index.php/worldline/donation">💛 Donate</a>
+  </div>
+</div>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo"><div class="logo-orb">🪷</div><div class="logo-words"><h1>AAI TULJA BHAVANI MANDIR</h1><p>PARAS · BALAPUR · DIST. AKOLA</p></div></a>
+    <ul class="nav-list">
+      <li><a href="index.html">Home</a></li>
+      <li><button class="nav-drop-btn">The Temple ▾</button><div class="nav-dropdown"><a href="about.html">About Temple</a><a href="https://shrituljabhavaniparas.org/index.php/welcome/priest">Temple Priest</a><a href="https://shrituljabhavaniparas.org/index.php/welcome/trusteeboard">Trustee Board</a></div></li>
+      <li><a href="news.html" class="active">News</a></li>
+      <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/gallery">Gallery</a></li>
+      <li><a href="https://shrituljabhavaniparas.org/index.php/welcome/contact">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="https://shrituljabhavaniparas.org/index.php/worldline/booking" style="font-family:'Cinzel',serif;font-size:.71rem;padding:7px 13px;border-radius:4px;text-decoration:none;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--maroon-deep);font-weight:700;">📅 Book Pooja</a>
+      <a href="shop.html" class="nav-btn-shop" style="font-family:'Cinzel Decorative',serif;font-size:.65rem;padding:7px 13px;border-radius:4px;text-decoration:none;">🛕 For Sale</a>
+      <button class="nav-btn-cart" onclick="openCart()">🛒 <span class="cart-badge">0</span></button>
+    </div>
+    <button class="hamburger"><span></span><span></span><span></span></button>
+  </div>
+</header>
+<div class="marquee-bar"><span class="marquee-track">🪷 JAI TULJA BHAVANI &nbsp;✦&nbsp; ONLINE BOOKING AVAILABLE &nbsp;✦&nbsp; ARCHANA &amp; SANKALP POOJA &nbsp;✦&nbsp; NAVRATRI MAHOTSAV &nbsp;✦&nbsp; JAI JAGDAMB JAGDAMB &nbsp;✦&nbsp; PARAS · DIST AKOLA &nbsp;✦&nbsp; 🪷 JAI TULJA BHAVANI &nbsp;✦&nbsp; ONLINE BOOKING AVAILABLE &nbsp;✦&nbsp; ARCHANA &amp; SANKALP POOJA &nbsp;✦&nbsp; NAVRATRI MAHOTSAV &nbsp;✦&nbsp; PARAS · DIST AKOLA &nbsp;✦&nbsp;</span></div>
+
+<div class="page-banner">
+  <span class="lbl">Stay Informed</span>
+  <h1 class="sec-title">News & Events</h1>
+  <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><span style="color:var(--gold-lt);">News & Events</span></div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div class="news-layout">
+
+      <!-- MAIN CONTENT -->
+      <div>
+        <!-- Featured -->
+        <div class="news-featured fade-up">
+          <img class="nf-img" src="https://shrituljabhavaniparas.org/uploads/events/a716d77e-0a9f-42b6-b1fd-252ca2816a05_(1).jpeg" alt="JAGDAMB JAGDAMB" onerror="this.src='https://shrituljabhavaniparas.org/uploads/banner/SAVE_20250908_135424.jpg'">
+          <div class="nf-body">
+            <span class="nf-tag">Featured Event</span>
+            <h2 class="nf-title">🪷 JAGDAMB JAGDAMB — Grand Festival Celebration</h2>
+            <div class="nf-meta">📅 2025 &nbsp;·&nbsp; 📍 Aai Tulja Bhavani Mandir, Paras</div>
+            <p class="nf-excerpt">The grand JAGDAMB JAGDAMB festival was celebrated with immense devotion and grandeur at Aai Tulja Bhavani Mandir, Paras. Thousands of devotees gathered to offer prayers, participate in the aarti, and seek the blessings of Maa Bhavani. The event was marked by colourful decorations, bhajans, kirtans, and a serene atmosphere of spiritual joy. The Sadhana Foundation committee worked tirelessly to ensure a smooth and divine celebration for all attendees.</p>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Cinzel',serif;font-size:.9rem;color:var(--maroon);letter-spacing:.1em;margin-bottom:18px;padding-bottom:8px;border-bottom:1.5px solid rgba(201,147,10,.2);" class="fade-up">🗞️ RECENT NEWS & UPDATES</h3>
+
+        <div class="news-grid fade-up">
+          <div class="news-card">
+            <div class="nc-img">🔱</div>
+            <div class="nc-body">
+              <div class="nc-tag">Announcement</div>
+              <div class="nc-title">Online Pooja Booking Now Available</div>
+              <div class="nc-date">📅 2025 · Paras Mandir</div>
+              <div class="nc-excerpt">Devotees can now book Archana and Sankalp poojas from the comfort of their homes through our secure online booking system.</div>
+            </div>
+          </div>
+          <div class="news-card">
+            <div class="nc-img">🪔</div>
+            <div class="nc-body">
+              <div class="nc-tag">Festival</div>
+              <div class="nc-title">Navratri Mahotsav 2025 – Celebrations</div>
+              <div class="nc-date">📅 Navratri 2025</div>
+              <div class="nc-excerpt">Nine nights of grand devotion at the mandir. Special poojas, bhajans, and cultural programmes were arranged for all devotees.</div>
+            </div>
+          </div>
+          <div class="news-card">
+            <div class="nc-img" style="background:linear-gradient(135deg,#fdefc0,#ffd080);">🏛️</div>
+            <div class="nc-body">
+              <div class="nc-tag">Development</div>
+              <div class="nc-title">Temple Development Work Completed</div>
+              <div class="nc-date">📅 2025 · Infrastructure</div>
+              <div class="nc-excerpt">Major development work at the mandir has been completed through the generous donations of devotees and the efforts of the Sadhana Foundation.</div>
+            </div>
+          </div>
+          <div class="news-card">
+            <img class="nc-img" src="https://shrituljabhavaniparas.org/uploads/banner/SAVE_20250906_1108481.jpg" alt="news" style="width:100%;aspect-ratio:16/9;object-fit:cover;">
+            <div class="nc-body">
+              <div class="nc-tag">Gallery Update</div>
+              <div class="nc-title">New Photos Added to Temple Gallery</div>
+              <div class="nc-date">📅 2025</div>
+              <div class="nc-excerpt">New photographs from recent festivals and daily darshan have been added to the temple gallery. View all images online.</div>
+            </div>
+          </div>
+          <div class="news-card">
+            <div class="nc-img">📿</div>
+            <div class="nc-body">
+              <div class="nc-tag">Shop Launch</div>
+              <div class="nc-title">Temple Online Shop Now Open</div>
+              <div class="nc-date">📅 2025 · New Service</div>
+              <div class="nc-excerpt">Devotees can now purchase temple prasad, idols, pooja items and accessories online. All items are blessed at the mandir.</div>
+            </div>
+          </div>
+          <div class="news-card">
+            <div class="nc-img">💛</div>
+            <div class="nc-body">
+              <div class="nc-tag">Donation Drive</div>
+              <div class="nc-title">Online Donation Portal Launched</div>
+              <div class="nc-date">📅 2025</div>
+              <div class="nc-excerpt">Devotees from across India and abroad can now contribute to the temple through our secure online donation portal.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="load-more-wrap fade-up">
+          <button class="btn-outline" onclick="this.textContent='No more items to load.'">Load More News</button>
+        </div>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div>
+        <div class="announce-bar fade-up">
+          <h4>📢 Latest Announcement</h4>
+          <p>Online Pooja booking is now available. Book your slot for Archana or Sankalp from anywhere in the world.</p>
+          <a href="https://shrituljabhavaniparas.org/index.php/worldline/booking" class="btn-gold" style="display:inline-block;margin-top:12px;font-size:.72rem;padding:8px 16px;">Book Now →</a>
+        </div>
+
+        <div class="sidebar-box fade-up">
+          <div class="sb-title">🗓️ Upcoming Events</div>
+          <div class="ev-list-item">
+            <div class="ev-date-box"><div class="ev-day">09</div><div class="ev-month">Oct</div></div>
+            <div class="ev-list-info"><div class="ev-list-title">Navratri Begins</div><div class="ev-list-desc">Nine days of devotion & special poojas at the mandir.</div></div>
+          </div>
+          <div class="ev-list-item">
+            <div class="ev-date-box"><div class="ev-day">17</div><div class="ev-month">Oct</div></div>
+            <div class="ev-list-info"><div class="ev-list-title">Vijayadashami</div><div class="ev-list-desc">Grand celebration on the final day of Navratri.</div></div>
+          </div>
+          <div class="ev-list-item">
+            <div class="ev-date-box"><div class="ev-day">01</div><div class="ev-month">Nov</div></div>
+            <div class="ev-list-info"><div class="ev-list-title">Diwali Puja</div><div class="ev-list-desc">Special Lakshmi puja and aarti on Diwali night.</div></div>
+          </div>
+          <div class="ev-list-item">
+            <div class="ev-date-box"><div class="ev-day">15</div><div class="ev-month">Jan</div></div>
+            <div class="ev-list-info"><div class="ev-list-title">Makar Sankranti</div><div class="ev-list-desc">Community celebration with special prasad distribution.</div></div>
+          </div>
+        </div>
+
+        <div class="sidebar-box fade-up">
+          <div class="sb-title">🖼️ Recent Photos</div>
+          <div class="sb-item"><div class="sb-thumb"><img src="https://shrituljabhavaniparas.org/uploads/gallery/3b7a5978-105b-4c34-9b3f-66f8476b1a15_(1).jpeg" alt="g" style="width:100%;height:100%;object-fit:cover;border-radius:4px;"></div><div class="sb-info"><div class="sb-ititle">Temple Darshan</div><div class="sb-idate">2025</div></div></div>
+          <div class="sb-item"><div class="sb-thumb" style="background:linear-gradient(135deg,var(--gold-pale),#ffd080);">🪷</div><div class="sb-info"><div class="sb-ititle">Festival Celebration</div><div class="sb-idate">Navratri 2025</div></div></div>
+          <div class="sb-item"><div class="sb-thumb"><img src="https://shrituljabhavaniparas.org/uploads/banner/9bbdfb58-ad3b-405a-87ad-417795258aa0_(1).jpeg" alt="g" style="width:100%;height:100%;object-fit:cover;border-radius:4px;"></div><div class="sb-info"><div class="sb-ititle">Temple Premises</div><div class="sb-idate">2025</div></div></div>
+          <a href="https://shrituljabhavaniparas.org/index.php/welcome/gallery" class="btn-outline" style="display:block;text-align:center;margin-top:12px;font-size:.72rem;">View All Photos →</a>
+        </div>
+
+        <div class="sidebar-box fade-up">
+          <div class="sb-title">🛕 Temple Shop</div>
+          <p style="font-size:.78rem;color:var(--text-mid);line-height:1.65;margin-bottom:12px;">Purchase blessed prasad, idols, agarbatti and more from the temple shop. Delivered to your doorstep.</p>
+          <a href="shop.html" class="btn-primary" style="display:block;text-align:center;">Shop Now →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="f-logo-text">🪷 AAI TULJA BHAVANI MANDIR</div><p class="f-desc">A sacred centre of faith at Paras, Akola. Sadhana Charitable Foundation. Reg: U85300MH2019NPL334216</p></div>
+      <div><div class="f-head">Quick Links</div><ul class="f-links"><li><a href="index.html">Home</a></li><li><a href="about.html">About Temple</a></li><li><a href="news.html">News & Events</a></li><li><a href="shop.html">Temple Shop</a></li><li><a href="https://shrituljabhavaniparas.org/index.php/welcome/gallery">Gallery</a></li></ul></div>
+      <div><div class="f-head">Policies</div><ul class="f-links"><li><a href="https://shrituljabhavaniparas.org/index.php/welcome/termsandconditions">Terms & Conditions</a></li><li><a href="https://shrituljabhavaniparas.org/index.php/welcome/privacypolicy">Privacy Policy</a></li><li><a href="https://shrituljabhavaniparas.org/index.php/welcome/cancellationpolicy">Refund Policy</a></li></ul></div>
+      <div class="f-contact"><div class="f-head">Contact</div><p>📍 Paras, TQ Balapur, Dist. Akola – 444109</p><p style="margin-top:6px;">📞 <a href="tel:9822535654">9822535654</a></p><p>✉️ <a href="mailto:sadhanagroup.org@gmail.com">sadhanagroup.org@gmail.com</a></p><div class="f-cta-row"><a href="https://shrituljabhavaniparas.org/index.php/worldline/booking" class="f-cta f-cta-book">Book Pooja</a><a href="https://shrituljabhavaniparas.org/index.php/worldline/donation" class="f-cta f-cta-donate">Donate</a></div></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Aai Tulja Bhavani Mandir · Sadhana Charitable Foundation</p><p>🕉️ जय तुळजाभवानी 🕉️</p></div>
+  </div>
+</footer>
+<div class="overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer"><div class="cd-head"><h3>🛒 Your Cart</h3><button class="cd-close" onclick="closeCart()">✕</button></div><div class="cd-list" id="cdList"><div class="cd-empty"><div class="cd-empty-icon">🪔</div><p>Cart is empty.<br><a href="shop.html" style="color:var(--saffron);">Visit the shop!</a></p></div></div><div class="cd-foot" id="cdFoot" style="display:none;"><div class="cd-trow"><span>Subtotal</span><span id="cdSubtotal">₹0</span></div><div class="cd-trow"><span>Shipping</span><span>₹50</span></div><div class="cd-trow grand"><span>Total</span><span id="cdTotal">₹0</span></div><button class="cd-proceed" onclick="openCheckout()">✨ Checkout</button></div></div>
+<div class="modal-wrap" id="checkoutModal"><div class="modal-box"><div class="mo-head"><h3>🙏 Checkout</h3><button class="cd-close" onclick="closeCheckout()">✕</button></div><div class="mo-body" id="moForm"><div class="os-box" id="moSummary"></div><span class="lbl" style="margin-bottom:11px;display:block;">📦 Delivery Details</span><input class="f-ctrl" id="moName" placeholder="Full Name *"><div class="two-col"><input class="f-ctrl" id="moPhone" placeholder="Phone *"><input class="f-ctrl" id="moEmail" placeholder="Email" type="email"></div><textarea class="f-ctrl" id="moAddr" rows="2" placeholder="Address *"></textarea><div class="two-col"><input class="f-ctrl" id="moCity" placeholder="City *"><input class="f-ctrl" id="moPin" placeholder="Pincode *" maxlength="6"></div><select class="f-ctrl" id="moState"><option>Maharashtra</option><option>Gujarat</option><option>Karnataka</option><option>Other</option></select><span class="lbl" style="margin-bottom:8px;display:block;">💳 Payment</span><select class="f-ctrl" id="moPayment"><option>UPI / GPay</option><option>Cash on Delivery</option><option>Card</option></select><button class="mo-place" onclick="placeOrder()">🙏 Place Order — <span id="moTotal">₹0</span></button></div><div class="order-ok" id="moSuccess" style="display:none;"><div class="ok-icon">🎉</div><h3>Order Confirmed!</h3><p>Jay Tulja Bhavani 🙏</p><div class="order-id" id="moOrderId"></div><button class="mo-place" onclick="closeCheckout()">Continue</button></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="shared.js"></script>
+</body>
+</html>
