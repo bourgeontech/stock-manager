@@ -22,13 +22,58 @@ class Account extends CI_Controller {
 
 	public function dashboard() {
         $date = $this->input->post('date') ? $this->input->post('date') : date('Y-m-d');
-        $data['selected_date']    = $date;
-        $data['counter_summary']  = $this->Accounts_model->getCounterSummaryByDate($date);
-        $data['is_posted']        = $this->Accounts_model->isCounterSummaryPosted($date);
+        $data['selected_date']   = $date;
+        $data['counter_summary'] = $this->Accounts_model->getCounterSummaryByDate($date);
+        $data['is_posted']       = $this->Accounts_model->isCounterSummaryPosted($date);
+        $data['gh_summary']      = $this->_fetchGuestHouseSummary($date);
+        $data['gh_is_posted']    = $this->Accounts_model->isGuestHouseSummaryPosted($date);
 
         $this->load->view('admin/layouts/admin_header');
         $this->load->view('admin/accounts/dashboard', $data);
         $this->load->view('admin/layouts/admin_footer');
+    }
+
+    private function _fetchGuestHouseSummary($date) {
+        $url = 'https://kdgh.simbillsoft.in/reportsapi/daily?date=' . urlencode($date) . '&token=kdghtoken';
+        $ch  = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 10,
+            CURLOPT_SSL_VERIFYPEER => false,
+        ]);
+        $response = curl_exec($ch);
+        curl_close($ch);
+        if (!$response) return null;
+        $json = json_decode($response, true);
+        return (isset($json['status']) && $json['status'] === 'success') ? $json['summary'] : null;
+    }
+
+	public function postGuestHouseSummary() {
+        $date = $this->input->post('date');
+        if (!$date) {
+            echo json_encode(['success' => false, 'message' => 'Date is required']);
+            return;
+        }
+
+        if ($this->Accounts_model->isGuestHouseSummaryPosted($date)) {
+            echo json_encode(['success' => false, 'message' => 'Guest House summary for ' . $date . ' has already been posted to accounts.']);
+            return;
+        }
+
+        $gh_summary = $this->_fetchGuestHouseSummary($date);
+        if (!$gh_summary) {
+            echo json_encode(['success' => false, 'message' => 'No Guest House data found for ' . $date]);
+            return;
+        }
+
+        $total = (float)($gh_summary['total_collection']['total'] ?? 0);
+        if ($total <= 0) {
+            echo json_encode(['success' => false, 'message' => 'No collections to post for ' . $date]);
+            return;
+        }
+
+        $this->Accounts_model->postGuestHousePayments($date, $gh_summary, $this->loggedIn['id']);
+        echo json_encode(['success' => true, 'message' => 'Guest House summary for ' . $date . ' posted successfully.']);
     }
 
 	public function getCustomerCreditReport($from_date, $to_date) {

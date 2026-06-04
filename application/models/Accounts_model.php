@@ -1574,6 +1574,44 @@ $this->db->select('group');
         return ['counters' => $counters, 'modes' => $modes];
     }
 
+    // Find a ledger by name; create it (and its group if needed) when absent.
+    public function findOrCreateLedger($name, $group_name) {
+        $row = $this->db->query(
+            "SELECT led_Id FROM ledger WHERE name='" . $this->db->escape_str($name) . "' AND is_delete=0 LIMIT 1"
+        )->row();
+        if ($row) return (int)$row->led_Id;
+
+        // Find or create the ledger group
+        $grp = $this->db->query(
+            "SELECT group_id FROM ledger_group WHERE group_name='" . $this->db->escape_str($group_name) . "' LIMIT 1"
+        )->row();
+        if ($grp) {
+            $group_id = (int)$grp->group_id;
+        } else {
+            $this->db->insert('ledger_group', ['group_name' => $group_name, 'is_delete' => 0]);
+            $group_id = $this->db->insert_id();
+        }
+
+        $this->db->insert('ledger', [
+            'name'        => $name,
+            'name_mal'    => '',
+            'group'       => $group_id,
+            'opening_bal' => 0,
+            'balance'     => 0,
+            'is_delete'   => 0,
+            'created'     => date('Y-m-d H:i:s'),
+        ]);
+        return $this->db->insert_id();
+    }
+
+    // Find payment_modes.id by slug
+    public function findPaymentModeIdBySlug($slug) {
+        $row = $this->db->query(
+            "SELECT id FROM payment_modes WHERE slug='" . $this->db->escape_str($slug) . "' LIMIT 1"
+        )->row();
+        return $row ? (int)$row->id : null;
+    }
+
     public function isCounterSummaryPosted($date) {
         $query = $this->db->query(
             "SELECT COUNT(*) AS cnt FROM payment WHERE narration LIKE 'Counter Summary - " . $this->db->escape_like_str($date) . "%' AND is_delete=0"
@@ -1585,7 +1623,7 @@ $this->db->select('group');
         $vno_row  = $this->db->query("SELECT voucher_no FROM payment WHERE type=2 ORDER BY pay_Id DESC LIMIT 1")->row();
         $next_vno = $vno_row ? ((int)$vno_row->voucher_no + 1) : 1;
 
-        $income_ledger_id = 6; // Income from Counter
+        $income_ledger_id = $this->findOrCreateLedger('Income from Counter', 'Income');
         $f_year           = date('Y', strtotime($date));
 
         foreach ($mode_totals as $mode_id => $amount) {
@@ -1599,6 +1637,91 @@ $this->db->select('group');
                 'amount'       => $amount,
                 'mode'         => $mode_id,
                 'narration'    => 'Counter Summary - ' . $date . ' (' . $mode_name . ')',
+                'type'         => 2,
+                'payment_date' => $date,
+                'is_delete'    => 0,
+                'f_year'       => $f_year,
+                'voucher_no'   => $next_vno++,
+                'ref_no'       => null,
+                'created_by'   => $created_by,
+            ]);
+        }
+
+        return true;
+    }
+
+    public function isGuestHouseSummaryPosted($date) {
+        $query = $this->db->query(
+            "SELECT COUNT(*) AS cnt FROM payment WHERE narration LIKE 'Guest House Summary - " . $this->db->escape_like_str($date) . "%' AND is_delete=0"
+        );
+        return (int)$query->row()->cnt > 0;
+    }
+
+    public function postGuestHousePayments($date, $gh_summary, $created_by) {
+        $vno_row  = $this->db->query("SELECT voucher_no FROM payment WHERE type=2 ORDER BY pay_Id DESC LIMIT 1")->row();
+        $next_vno = $vno_row ? ((int)$vno_row->voucher_no + 1) : 1;
+
+        $income_ledger = $this->findOrCreateLedger('Guest House Income', 'Income');
+        $cgst_ledger   = $this->findOrCreateLedger('CGST Payable', 'Tax Payable');
+        $sgst_ledger   = $this->findOrCreateLedger('SGST Payable', 'Tax Payable');
+        $f_year        = date('Y', strtotime($date));
+
+        // API mode key → payment_modes.id mapping
+        $mode_map = [
+            'cash' => $this->findPaymentModeIdBySlug('cash'),
+            'upi'  => $this->findPaymentModeIdBySlug('qrcode'),
+        ];
+
+        $cgst = (float)($gh_summary['tax_charge']['cgst'] ?? 0);
+        $sgst = (float)($gh_summary['tax_charge']['sgst'] ?? 0);
+
+        // Income entries — one per payment mode
+        foreach ($mode_map as $api_key => $pm_id) {
+            if (!$pm_id) continue;
+
+            $income = (float)($gh_summary['room_rent'][$api_key]    ?? 0)
+                    + (float)($gh_summary['extra_charge'][$api_key] ?? 0);
+
+            if ($income > 0) {
+                $this->db->insert('payment', [
+                    'ledger'       => $income_ledger,
+                    'amount'       => $income,
+                    'mode'         => $pm_id,
+                    'narration'    => 'Guest House Summary - ' . $date . ' (' . strtoupper($api_key) . ' - Income)',
+                    'type'         => 2,
+                    'payment_date' => $date,
+                    'is_delete'    => 0,
+                    'f_year'       => $f_year,
+                    'voucher_no'   => $next_vno++,
+                    'ref_no'       => null,
+                    'created_by'   => $created_by,
+                ]);
+            }
+        }
+
+        // Tax entries — single total entry per tax type, independent of mode
+        if ($cgst > 0) {
+            $this->db->insert('payment', [
+                'ledger'       => $cgst_ledger,
+                'amount'       => $cgst,
+                'mode'         => $mode_map['cash'] ?? reset($mode_map),
+                'narration'    => 'Guest House Summary - ' . $date . ' (CGST)',
+                'type'         => 2,
+                'payment_date' => $date,
+                'is_delete'    => 0,
+                'f_year'       => $f_year,
+                'voucher_no'   => $next_vno++,
+                'ref_no'       => null,
+                'created_by'   => $created_by,
+            ]);
+        }
+
+        if ($sgst > 0) {
+            $this->db->insert('payment', [
+                'ledger'       => $sgst_ledger,
+                'amount'       => $sgst,
+                'mode'         => $mode_map['cash'] ?? reset($mode_map),
+                'narration'    => 'Guest House Summary - ' . $date . ' (SGST)',
                 'type'         => 2,
                 'payment_date' => $date,
                 'is_delete'    => 0,

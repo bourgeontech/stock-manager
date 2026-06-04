@@ -146,6 +146,23 @@
     color: #1a7a4a;
   }
 
+  .accdash .summary-table td.cash-val {
+    text-align: right;
+    font-weight: 700;
+    color: #2563a8;
+  }
+
+  .accdash .summary-table td.bank-val {
+    text-align: right;
+    font-weight: 700;
+    color: #1a7a4a;
+  }
+
+  .accdash .summary-table tfoot td.cash-val,
+  .accdash .summary-table tfoot td.bank-val {
+    color: #7d6608;
+  }
+
   /* Total footer row */
   .accdash .summary-table tfoot tr {
     background: #fef9e7;
@@ -234,6 +251,39 @@
     font-size: 10px;
     color: #aaa;
     letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Sub-section label */
+  .accdash .sub-label {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #2563a8;
+    padding: 4px 10px 2px;
+    border-top: 1px solid #e0e6ed;
+    background: #f0f5fa;
+  }
+
+  /* Payment mode tags */
+  .accdash .mode-list {
+    display: flex;
+    gap: 5px;
+    padding: 5px 10px;
+    flex-wrap: wrap;
+    background: #fff;
+  }
+
+  .accdash .mode-tag {
+    background: #eef3f9;
+    border: 1px solid #c9d8e8;
+    border-radius: 3px;
+    padding: 2px 8px;
+    font-size: 9px;
+    font-weight: 700;
+    color: #1a3a5c;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
@@ -379,10 +429,128 @@ foreach ($counters as $cdata) {
       </div>
     </div>
 
-    <!-- PANEL 2 — Guest House (placeholder) -->
+    <!-- PANEL 2 — Guest House -->
     <div class="panel">
-      <div class="panel-title">Guest House</div>
-      <div class="panel-placeholder">Coming soon</div>
+      <div class="panel-title">Guest House &mdash; <?php echo date("d M Y", strtotime($selected_date)); ?></div>
+
+      <?php
+        $gh_is_posted = isset($gh_is_posted) ? $gh_is_posted : false;
+      ?>
+      <?php if (!empty($gh_summary)): $g = $gh_summary;
+        /* Collect payment mode keys dynamically from room_rent (cash, upi, card, etc.) */
+        $gh_modes = [];
+        $mode_labels = ['cash' => 'Cash', 'upi' => 'UPI', 'card' => 'Card'];
+        foreach ($mode_labels as $mk => $ml) {
+            if (isset($g['room_rent'][$mk])) $gh_modes[$mk] = $ml;
+        }
+      ?>
+
+        <!-- Collection table -->
+        <div class="sub-label">Collection</div>
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <?php foreach ($gh_modes as $mk => $ml): ?>
+              <th class="num"><?php echo $ml; ?></th>
+              <?php endforeach; ?>
+              <th class="num">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Room Rent -->
+            <tr>
+              <td class="counter-name">Room Rent</td>
+              <?php foreach ($gh_modes as $mk => $ml): ?>
+              <td class="cash-val"><?php echo number_format($g['room_rent'][$mk] ?? 0, 2); ?></td>
+              <?php endforeach; ?>
+              <td class="bank-val"><?php echo number_format($g['room_rent']['total'] ?? 0, 2); ?></td>
+            </tr>
+            <!-- Extra Charge — show only if total > 0 -->
+            <?php if (!empty($g['extra_charge']['total'])): ?>
+            <tr>
+              <td class="counter-name">Extra Charge</td>
+              <?php foreach ($gh_modes as $mk => $ml): ?>
+              <td class="cash-val"><?php echo number_format($g['extra_charge'][$mk] ?? 0, 2); ?></td>
+              <?php endforeach; ?>
+              <td class="bank-val"><?php echo number_format($g['extra_charge']['total'], 2); ?></td>
+            </tr>
+            <?php endif; ?>
+            <!-- Tax Charge — show only if total > 0 -->
+            <?php if (!empty($g['tax_charge']['total'])): ?>
+            <tr>
+              <td class="counter-name">
+                Tax
+                <?php if (!empty($g['tax_charge']['cgst']) || !empty($g['tax_charge']['sgst'])): ?>
+                <span style="font-weight:400;font-size:8.5px;opacity:.75;">
+                  (CGST &#8377;<?php echo number_format($g['tax_charge']['cgst'] ?? 0, 2); ?>
+                  + SGST &#8377;<?php echo number_format($g['tax_charge']['sgst'] ?? 0, 2); ?>)
+                </span>
+                <?php endif; ?>
+              </td>
+              <?php foreach ($gh_modes as $mk => $ml): ?>
+              <td class="cash-val"><?php echo number_format($g['tax_charge'][$mk] ?? 0, 2); ?></td>
+              <?php endforeach; ?>
+              <td class="bank-val"><?php echo number_format($g['tax_charge']['total'], 2); ?></td>
+            </tr>
+            <?php endif; ?>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="lbl"><strong>Total Collection</strong></td>
+              <?php foreach ($gh_modes as $mk => $ml): ?>
+              <td class="cash-val"><?php echo number_format($g['total_collection'][$mk] ?? 0, 2); ?></td>
+              <?php endforeach; ?>
+              <td class="bank-val"><?php echo number_format($g['total_collection']['total'] ?? 0, 2); ?></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <!-- Verify & Post -->
+        <div class="panel-actions">
+          <?php if ($gh_is_posted): ?>
+            <button type="button" class="btn-action" style="background:#6c757d;cursor:default;" disabled>
+              <svg viewBox="0 0 16 16"><path d="M13.5 2h-11A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0013.5 2zM7 11.5L3 7.5l1.4-1.4L7 8.7l4.6-4.6L13 5.5z"/></svg>
+              Already Posted
+            </button>
+          <?php else: ?>
+            <button type="button" class="btn-action green" id="btnGhPost"
+                    data-date="<?php echo htmlspecialchars($selected_date); ?>"
+                    data-url="<?php echo base_url(); ?>index.php/admin/account/postGuestHouseSummary">
+              <svg viewBox="0 0 16 16"><path d="M13.5 2h-11A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0013.5 2zM8 11L3 6h3V4h4v2h3L8 11z"/></svg>
+              Verify &amp; Post to Account
+            </button>
+          <?php endif; ?>
+          <span id="ghPostMsg" style="font-size:9px;font-weight:700;padding:3px 6px;border-radius:3px;display:none;"></span>
+        </div>
+
+        <!-- Payment Modes with amounts -->
+        <div class="sub-label">Payment Modes</div>
+        <div class="mode-list">
+          <?php foreach ($gh_modes as $mk => $ml):
+            $val = $g['total_collection'][$mk] ?? 0;
+          ?>
+          <span class="mode-tag"><?php echo $ml; ?> &mdash; &#8377;<?php echo number_format($val, 2); ?></span>
+          <?php endforeach; ?>
+        </div>
+
+        <!-- Stats strip -->
+        <div class="stats-strip">
+          <?php foreach ($gh_modes as $mk => $ml): ?>
+          <div class="st">
+            <span class="st-label"><?php echo $ml; ?></span>
+            <span class="st-val"><?php echo number_format($g['total_collection'][$mk] ?? 0, 2); ?></span>
+          </div>
+          <?php endforeach; ?>
+          <div class="st">
+            <span class="st-label">Total</span>
+            <span class="st-val"><?php echo number_format($g['total_collection']['total'] ?? 0, 2); ?></span>
+          </div>
+        </div>
+
+      <?php else: ?>
+        <div class="panel-placeholder">No data for this date</div>
+      <?php endif; ?>
     </div>
 
   </div><!-- /.dashboard-grid -->
@@ -401,6 +569,48 @@ foreach ($counters as $cdata) {
     var msg  = document.getElementById('postMsg');
 
     if (!confirm('Post counter summary for ' + date + ' to accounts?\nThis cannot be undone.')) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Posting...';
+    msg.style.display = 'none';
+
+    var fd = new FormData();
+    fd.append('date', date);
+
+    fetch(url, { method: 'POST', body: fd })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.success) {
+          btn.style.background = '#6c757d';
+          btn.innerHTML = '<svg viewBox="0 0 16 16" style="width:10px;height:10px;fill:#fff"><path d="M13.5 2h-11A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0013.5 2zM7 11.5L3 7.5l1.4-1.4L7 8.7l4.6-4.6L13 5.5z"/></svg> Already Posted';
+          msg.style.cssText = 'display:inline-block;background:#d4edda;color:#155724;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;';
+          msg.textContent = res.message;
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = '<svg viewBox="0 0 16 16" style="width:10px;height:10px;fill:#fff"><path d="M13.5 2h-11A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0013.5 2zM8 11L3 6h3V4h4v2h3L8 11z"/></svg> Verify &amp; Post to Account';
+          msg.style.cssText = 'display:inline-block;background:#f8d7da;color:#721c24;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;';
+          msg.textContent = res.message;
+        }
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Verify & Post to Account';
+        msg.style.cssText = 'display:inline-block;background:#f8d7da;color:#721c24;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;';
+        msg.textContent = 'Network error. Please try again.';
+      });
+  });
+}());
+
+(function () {
+  var btn = document.getElementById('btnGhPost');
+  if (!btn) return;
+
+  btn.addEventListener('click', function () {
+    var date = btn.getAttribute('data-date');
+    var url  = btn.getAttribute('data-url');
+    var msg  = document.getElementById('ghPostMsg');
+
+    if (!confirm('Post Guest House summary for ' + date + ' to accounts?\nThis cannot be undone.')) return;
 
     btn.disabled = true;
     btn.textContent = 'Posting...';
