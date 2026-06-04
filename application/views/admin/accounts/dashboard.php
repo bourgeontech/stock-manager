@@ -243,21 +243,24 @@
 </style>
 
 <?php
-  $counters    = isset($counter_summary['counters']) ? $counter_summary['counters'] : [];
-  $modes       = isset($counter_summary['modes'])    ? $counter_summary['modes']    : [];
+$counters = isset($counter_summary["counters"])
+    ? $counter_summary["counters"]
+    : [];
+$modes = isset($counter_summary["modes"]) ? $counter_summary["modes"] : [];
+$is_posted = isset($is_posted) ? $is_posted : false;
 
-  /* column totals per mode */
-  $mode_totals = [];
-  $grand_total = 0;
-  foreach ($modes as $mid => $mname) {
-      $mode_totals[$mid] = 0;
-  }
-  foreach ($counters as $cdata) {
-      foreach ($cdata['modes'] as $mid => $amt) {
-          $mode_totals[$mid] = ($mode_totals[$mid] ?? 0) + $amt;
-          $grand_total += $amt;
-      }
-  }
+/* column totals per mode */
+$mode_totals = [];
+$grand_total = 0;
+foreach ($modes as $mid => $mname) {
+    $mode_totals[$mid] = 0;
+}
+foreach ($counters as $cdata) {
+    foreach ($cdata["modes"] as $mid => $amt) {
+        $mode_totals[$mid] = ($mode_totals[$mid] ?? 0) + $amt;
+        $grand_total += $amt;
+    }
+}
 ?>
 
 <div class="side_right">
@@ -266,10 +269,12 @@
   <!-- Page header -->
   <div class="page-header">
     <h1>&#9783;&nbsp; Accounts Dashboard</h1>
-    <form method="post" action="<?php echo base_url(); ?>index.php/accounts/dashboard" style="margin:0;">
+    <form method="post" action="<?php echo base_url(); ?>index.php/admin/account/dashboard" style="margin:0;">
       <div class="date-bar">
         <label>Choose Date</label>
-        <input type="date" name="date" value="<?php echo htmlspecialchars($selected_date); ?>" max="<?php echo date('Y-m-d'); ?>">
+        <input type="date" name="date" value="<?php echo htmlspecialchars(
+            $selected_date,
+        ); ?>" max="<?php echo date("Y-m-d"); ?>">
         <button type="submit" class="btn-go">Go</button>
       </div>
     </form>
@@ -280,7 +285,10 @@
 
     <!-- PANEL 1 — Counter Summary -->
     <div class="panel">
-      <div class="panel-title">Counter Summary &mdash; <?php echo date('d M Y', strtotime($selected_date)); ?></div>
+      <div class="panel-title">Counter Summary &mdash; <?php echo date(
+          "d M Y",
+          strtotime($selected_date),
+      ); ?></div>
 
       <table class="summary-table">
         <thead>
@@ -296,18 +304,24 @@
           <?php if (!empty($counters)): ?>
             <?php foreach ($counters as $cdata): ?>
               <tr>
-                <td class="counter-name"><?php echo htmlspecialchars($cdata['counter_name']); ?></td>
+                <td class="counter-name"><?php echo htmlspecialchars(
+                    $cdata["counter_name"],
+                ); ?></td>
                 <?php foreach ($modes as $mid => $mname): ?>
                   <td class="mode-val">
-                    <?php echo number_format($cdata['modes'][$mid] ?? 0, 2); ?>
+                    <?php echo number_format($cdata["modes"][$mid] ?? 0, 2); ?>
                   </td>
                 <?php endforeach; ?>
-                <td class="row-total"><?php echo number_format($cdata['row_total'], 2); ?></td>
+                <td class="row-total"><?php echo number_format(
+                    $cdata["row_total"],
+                    2,
+                ); ?></td>
               </tr>
             <?php endforeach; ?>
           <?php else: ?>
             <tr>
-              <td colspan="<?php echo count($modes) + 2; ?>" style="text-align:center; padding:10px; font-size:9px; color:#aaa;">
+              <td colspan="<?php echo count($modes) +
+                  2; ?>" style="text-align:center; padding:10px; font-size:9px; color:#aaa;">
                 No data for this date
               </td>
             </tr>
@@ -325,23 +339,42 @@
       </table>
 
       <div class="panel-actions">
-        <button type="button" class="btn-action green" disabled>
-          <svg viewBox="0 0 16 16"><path d="M13.5 2h-11A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0013.5 2zM8 11L3 6h3V4h4v2h3L8 11z"/></svg>
-          Verify &amp; Post to Account
-        </button>
+        <?php if ($is_posted): ?>
+          <button type="button" class="btn-action" style="background:#6c757d;cursor:default;" disabled>
+            <svg viewBox="0 0 16 16"><path d="M13.5 2h-11A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0013.5 2zM7 11.5L3 7.5l1.4-1.4L7 8.7l4.6-4.6L13 5.5z"/></svg>
+            Already Posted
+          </button>
+        <?php else: ?>
+          <button type="button" class="btn-action green" id="btnVerifyPost"
+                  data-date="<?php echo htmlspecialchars($selected_date); ?>"
+                  data-url="<?php echo base_url(); ?>index.php/admin/account/postCounterSummary"
+                  <?php echo empty($counters) ? "disabled" : ""; ?>>
+            <svg viewBox="0 0 16 16"><path d="M13.5 2h-11A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0013.5 2zM8 11L3 6h3V4h4v2h3L8 11z"/></svg>
+            Verify &amp; Post to Account
+          </button>
+        <?php endif; ?>
+        <span id="postMsg" style="font-size:9px;font-weight:700;padding:3px 6px;border-radius:3px;display:none;"></span>
       </div>
 
       <!-- Stats strip: one tile per mode + grand total -->
       <div class="stats-strip">
         <?php foreach ($modes as $mid => $mname): ?>
           <div class="st">
-            <span class="st-label"><?php echo htmlspecialchars($mname); ?></span>
-            <span class="st-val"><?php echo number_format($mode_totals[$mid] ?? 0, 2); ?></span>
+            <span class="st-label"><?php echo htmlspecialchars(
+                $mname,
+            ); ?></span>
+            <span class="st-val"><?php echo number_format(
+                $mode_totals[$mid] ?? 0,
+                2,
+            ); ?></span>
           </div>
         <?php endforeach; ?>
         <div class="st">
           <span class="st-label">Grand Total</span>
-          <span class="st-val"><?php echo number_format($grand_total, 2); ?></span>
+          <span class="st-val"><?php echo number_format(
+              $grand_total,
+              2,
+          ); ?></span>
         </div>
       </div>
     </div>
@@ -356,3 +389,47 @@
 
 </div><!-- /.accdash -->
 </div><!-- /.side_right -->
+
+<script>
+(function () {
+  var btn = document.getElementById('btnVerifyPost');
+  if (!btn) return;
+
+  btn.addEventListener('click', function () {
+    var date = btn.getAttribute('data-date');
+    var url  = btn.getAttribute('data-url');
+    var msg  = document.getElementById('postMsg');
+
+    if (!confirm('Post counter summary for ' + date + ' to accounts?\nThis cannot be undone.')) return;
+
+    btn.disabled = true;
+    btn.textContent = 'Posting...';
+    msg.style.display = 'none';
+
+    var fd = new FormData();
+    fd.append('date', date);
+
+    fetch(url, { method: 'POST', body: fd })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res.success) {
+          btn.style.background = '#6c757d';
+          btn.innerHTML = '<svg viewBox="0 0 16 16" style="width:10px;height:10px;fill:#fff"><path d="M13.5 2h-11A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0013.5 2zM7 11.5L3 7.5l1.4-1.4L7 8.7l4.6-4.6L13 5.5z"/></svg> Already Posted';
+          msg.style.cssText = 'display:inline-block;background:#d4edda;color:#155724;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;';
+          msg.textContent = res.message;
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = '<svg viewBox="0 0 16 16" style="width:10px;height:10px;fill:#fff"><path d="M13.5 2h-11A1.5 1.5 0 001 3.5v9A1.5 1.5 0 002.5 14h11a1.5 1.5 0 001.5-1.5v-9A1.5 1.5 0 0013.5 2zM8 11L3 6h3V4h4v2h3L8 11z"/></svg> Verify &amp; Post to Account';
+          msg.style.cssText = 'display:inline-block;background:#f8d7da;color:#721c24;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;';
+          msg.textContent = res.message;
+        }
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Verify & Post to Account';
+        msg.style.cssText = 'display:inline-block;background:#f8d7da;color:#721c24;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;';
+        msg.textContent = 'Network error. Please try again.';
+      });
+  });
+}());
+</script>

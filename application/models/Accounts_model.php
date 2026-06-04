@@ -1574,4 +1574,42 @@ $this->db->select('group');
         return ['counters' => $counters, 'modes' => $modes];
     }
 
+    public function isCounterSummaryPosted($date) {
+        $query = $this->db->query(
+            "SELECT COUNT(*) AS cnt FROM payment WHERE narration LIKE 'Counter Summary - " . $this->db->escape_like_str($date) . "%' AND is_delete=0"
+        );
+        return (int)$query->row()->cnt > 0;
+    }
+
+    public function postCounterSummaryPayments($date, $mode_totals, $created_by) {
+        $vno_row  = $this->db->query("SELECT voucher_no FROM payment WHERE type=2 ORDER BY pay_Id DESC LIMIT 1")->row();
+        $next_vno = $vno_row ? ((int)$vno_row->voucher_no + 1) : 1;
+
+        $income_ledger_id = 6; // Income from Counter
+        $f_year           = date('Y', strtotime($date));
+
+        foreach ($mode_totals as $mode_id => $amount) {
+            if ($amount <= 0) continue;
+
+            $pm        = $this->getPaymentModeById($mode_id);
+            $mode_name = $pm ? $pm->name : ('Mode ' . $mode_id);
+
+            $this->db->insert('payment', [
+                'ledger'       => $income_ledger_id,
+                'amount'       => $amount,
+                'mode'         => $mode_id,
+                'narration'    => 'Counter Summary - ' . $date . ' (' . $mode_name . ')',
+                'type'         => 2,
+                'payment_date' => $date,
+                'is_delete'    => 0,
+                'f_year'       => $f_year,
+                'voucher_no'   => $next_vno++,
+                'ref_no'       => null,
+                'created_by'   => $created_by,
+            ]);
+        }
+
+        return true;
+    }
+
     }
