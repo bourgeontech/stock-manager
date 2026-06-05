@@ -1872,12 +1872,15 @@ $result = $query->row();
             }
         }
         
-        public function getpurchase($datef,$datet,$suppr=null){
+        public function getpurchase($datef,$datet,$suppr=null,$store=null){
             $this->db->select('purchase.*,purchase.id as purchase_id,supplier.*,supplier.id as sup_id');
             $this->db->from('purchase');
             $this->db->join('supplier','supplier.id = purchase.supplier_id');
             $this->db->where("purchase.date BETWEEN '$datef' AND '$datet'");
-            if($suppr!=null){
+            if($store != null && $store != ''){
+                $this->db->where('supplier.storeid', $store);
+            }
+            if($suppr!=null && $suppr!=''){
                 $this->db->where('purchase.supplier_id', $suppr);
             }
             $this->db->order_by("purchase.id", "desc");
@@ -1888,6 +1891,21 @@ $result = $query->row();
             else {
                 return 0;
             }
+        }
+
+        public function get_suppliers_by_store($store=null){
+            $this->db->select('id, name');
+            $this->db->from('supplier');
+            $this->db->where('sup_for', 1);
+            if($store != null && $store != ''){
+                $this->db->where('storeid', $store);
+            }
+            $this->db->order_by('name');
+            $query = $this->db->get();
+            if ($query && $query->num_rows() > 0) {
+                return $query->result_array();
+            }
+            return array();
         }
         
         public function getpurchasebyid($id){

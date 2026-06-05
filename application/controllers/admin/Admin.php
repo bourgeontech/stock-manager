@@ -8148,6 +8148,7 @@ public function bill_report_twodate(){
         $this->form_validation->set_rules('datet', 'Datet', 'required');
         if ($this->form_validation->run() === FALSE){
             $data['supplier']=$this->general_model->getsupplier("1");
+            $data['store_list']=$this->general_model->get_stock_stores();
             $this->load->view('admin/layouts/admin_header');
             $this->load->view('admin/purchase/purchase_view',$data);
             $this->load->view('admin/layouts/admin_footer');
@@ -8155,16 +8156,26 @@ public function bill_report_twodate(){
             $datef=$this->input->post('datef');
             $datet=$this->input->post('datet');
             $suppr=$this->input->post('supplier');
-            $data['purchase_list']=$this->general_model->getpurchase($datef,$datet,$suppr);
+            $store=$this->input->post('store');
+            $data['purchase_list']=$this->general_model->getpurchase($datef,$datet,$suppr,$store);
             $data['datef']=$datef;
             $data['datet']=$datet;
             $data['suppl']=$suppr;
+            $data['store']=$store;
+            $data['supplier']=$this->general_model->getsupplier("1");
+            $data['store_list']=$this->general_model->get_stock_stores();
             if($this->input->post('serch')=="serch"){
                 $this->load->view('admin/layouts/admin_header');
                 $this->load->view('admin/purchase/purchase_view',$data);
                 $this->load->view('admin/layouts/admin_footer');
             }
         }
+    }
+
+    public function get_suppliers_by_store(){
+        $store = $this->input->get('store');
+        $suppliers = $this->general_model->get_suppliers_by_store($store);
+        echo json_encode($suppliers);
     }
     
     public function edit_purchase($id){
