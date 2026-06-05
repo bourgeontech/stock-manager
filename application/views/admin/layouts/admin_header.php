@@ -77,7 +77,7 @@
 						    <div class="color-headerlogo">
 								<a class="header-desktop" href="index.html"></a>
 								<a class="header-mobile" href="index.html"></a> 
-                             <?php if ($role!="Webuser"){?>	<nav class="navbar">
+                             <?php /* if ($role!="Webuser"){?>	<nav class="navbar">
   									<a class="btn btn-secondary" href="<?php echo base_url();?>index.php/admin/admin/billing">Billing -(F1) </a> 
                                 	<?php if($code_settings == 5 || $code_settings == 7): ?>
                                 	<a class="btn btn-success" href="<?php echo base_url();?>index.php/admin/schedulebilling/multy_schedule_hierarchical_pooja">Scheduled Billing (F2)</a>
@@ -91,7 +91,7 @@
                             		<a class="btn btn-secondary" href="<?php echo base_url();?>index.php/admin/admin/bill_report">Pooja  Summary(F7)</a>
            							<a class="btn btn-success " href="<?php echo base_url();?>index.php/admin/admin/pooja_calendar" >Pooja Availability Calendar</a>
                                 	<a class="btn btn-warning" href="<?php echo base_url();?>index.php/admin/billing/assign_allowed_quantity" >Update Pooja Quantity</a>
-                            	</nav><?php } ?>
+                            	</nav><?php } */ ?>
                             	  <script>
 //   	const loadCalendar = (events = null) => {
         
@@ -234,7 +234,7 @@
         											<?php 
                                                     }
 													?>
-										<?php 
+										<?php
 											if (in_array("addLedgerGroup", $pemission)||
 											    in_array("viewLedger", $pemission)){
     									    ?>
@@ -371,6 +371,7 @@
 									</li>
 									<?php 
 									}
+									/*
 									if (in_array("add_customer", $pemission)
 									    ||in_array("customer_view", $pemission)
                                         ||in_array("marriage_registration", $pemission)
@@ -695,6 +696,9 @@
 											?>
             							</ul>
             						</li>
+									<?php 
+									*/
+									?>
             						<?php 
 									if (in_array("addLedgerGroup", $pemission)
 									    ||in_array("viewLedger", $pemission)
@@ -723,8 +727,9 @@
 									    ||in_array("purchase_view", $pemission)
 									    ||in_array("issue_product", $pemission)
 									    ||in_array("adjustment_view", $pemission)
-									    ||in_array("stock_report", $pemission)){
+									    ||in_array("stock_report", $pemission)) {
 									?>
+									<?php /* 
             						<li aria-haspopup="true"><a href="#" class="sub-icon"><i class="fa fa-inr"></i> Accounts &nbsp;&nbsp;<i class="fa fa-angle-down horizontal-icon"></i></a>
 										<ul class="sub-menu">
 											<?php 
@@ -869,6 +874,7 @@
 											?>
 										</ul>
 									</li>
+								*/ ?>
                            	<?php if ($role!="Webuser"){?>   
                                 
                                 <li aria-haspopup="true"><a href="#" class="sub-icon">
@@ -924,7 +930,9 @@
 												</ul>
 											</li> <?php }?>
 									<?php 
-									}if (in_array("addPriest", $pemission)
+									}
+									/*
+									if (in_array("addPriest", $pemission)
 									    ||in_array("viewPriest", $pemission)
 									    ||in_array("addTrustee", $pemission)
 									    ||in_array("viewTrustee", $pemission)
@@ -1025,8 +1033,9 @@
         									?>
 										</ul>
 									</li>
+									<?php } */ ?>
 									<?php 
-									}if (in_array("addContent", $pemission)
+									if (in_array("addContent", $pemission)
 									    ||in_array("viewContent", $pemission)
 									    ||in_array("addBanner", $pemission)
 									    ||in_array("viewBanner", $pemission)

@@ -668,7 +668,7 @@ else if ($_SERVER['HTTP_HOST'] == "balusserykotta.com"  || $_SERVER['HTTP_HOST']
 if ($_SERVER['HTTP_HOST'] == "demo.punnyamtemplesuite.in"||$_SERVER['HTTP_HOST'] == "www.demo.punnyamtemplesuite.in") {
     $baseurl = 'http://demo.punnyamtemplesuite.in/';
 }
-$baseurl='http://localhost/vyra';
+$baseurl='http://localhost/stock-manager';
 $config['base_url'] = $baseurl;
 
 /*

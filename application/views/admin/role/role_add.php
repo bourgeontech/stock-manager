@@ -3,7 +3,7 @@
     <div class="clearfix"></div>
     <div class="page-header">
         <div class="col-lg-6 col-md-6 col-sm-6 ">
-          <h2 class="page_txt"> Role Managemend </h2>
+          <h2 class="page_txt"> Role Management </h2>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 ">
           <ul class="btn_ul" style="float:right;">
