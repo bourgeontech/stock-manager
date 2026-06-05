@@ -13,15 +13,15 @@ if (!defined('BASEPATH'))
             $this->db->select('*');
             $this->db->from('admin');
             $this->db->where('username',$data['username']);
-            $this->db->where('password',$data['password']);
             $query = $this->db->get();
 
             if ($query->num_rows() > 0) {
-                return $query->row_array();
+                $row = $query->row_array();
+                if (password_verify($data['password'], $row['password'])) {
+                    return $row;
+                }
             }
-            else {
-                return 0;
-            }
+            return 0;
         }
     
         public function getCustomer($id){

@@ -200,19 +200,18 @@ class Admin extends CI_Controller {
             $data=array(
                 'name'       =>$this->input->post('name'),
                 'username'   =>$this->input->post('username'),
-                'password'   =>$this->input->post('password'),
+                'password'   =>password_hash($this->input->post('password'), PASSWORD_BCRYPT),
                 'role'       =>$this->input->post('role'),
             );
             $id=$this->general_model->setuser($data);
             $msg="User Saved";
             redirect('admin/admin/user_view');
         }
-        
+
     }
     public function edit_user($id){
         $this->form_validation->set_rules('name', 'Name', 'required');
         $this->form_validation->set_rules('username', 'Username', 'required');
-        $this->form_validation->set_rules('password', 'Password', 'required');
         $this->form_validation->set_rules('role', 'Role', 'required');
         if ($this->form_validation->run() === FALSE){
             $data['user_list']=$this->general_model->getusersById($id);
@@ -226,9 +225,12 @@ class Admin extends CI_Controller {
                 'id'         =>$id,
                 'name'       =>$this->input->post('name'),
                 'username'   =>$this->input->post('username'),
-                'password'   =>$this->input->post('password'),
                 'role'       =>$this->input->post('role'),
             );
+            $new_password = $this->input->post('password');
+            if (!empty($new_password)) {
+                $data['password'] = password_hash($new_password, PASSWORD_BCRYPT);
+            }
             $id=$this->general_model->setuser($data);
             $msg="User Updated";
             redirect('admin/admin/user_view');

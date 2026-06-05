@@ -52,7 +52,7 @@
             <div class="div_label">
               <label class="text_label"> Password <span class="red">*</span> </label>
             </div>
-            <input class="sq_form" placeholder="Password" id="password" name="password" value="<?php echo $val['password']; ?>" type="text">
+            <input class="sq_form" placeholder="New Password (leave blank to keep current)" id="password" name="password" value="" type="password">
 			  <?php echo form_error('password', '<div class="error">', '</div>'); ?>
           </div>
         </div>

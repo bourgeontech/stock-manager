@@ -39,7 +39,7 @@
 					  <td><?= ++$i; ?></td>
 					  <td><a href="#"> <strong style="margin-bottom: 5px;display: block;color: #ea6227;"><?= $val['name']; ?></strong></a></td>
 					  <td ><p style="font-weight: bold"> <?= $val['username']; ?></p></td>
-					  <td ><p style="font-weight: bold" title="<?= $val['password']; ?>"> ******** </p></td>
+					  <td ><p style="font-weight: bold"> ******** </p></td>
 					  <td ><p style="font-weight: bold"> <?= $val['role']; ?></p></td>
 					  <td><div class="btn-group">
 						  <a href="<?php echo base_url();?>index.php/admin/admin/edit_user/<?= $val['id']; ?>" class="btn btn-outline-info" style="padding:6px;" title="Edit"> <i class="fa fa-edit"></i></a> 
