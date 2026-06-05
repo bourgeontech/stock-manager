@@ -1965,10 +1965,13 @@ $result = $query->row();
             }
         }
         
-        public function get_stock(){
+        public function get_stock($store_id=null){
             $this->db->select('inv_product.id as pro_id,inv_product.name,inv_product.code,SUM(stock.qty) as qty');
             $this->db->from('inv_product');
             $this->db->join('stock','stock.productid = inv_product.id');
+            if($store_id != null && $store_id != ''){
+                $this->db->where('stock.storeid', $store_id);
+            }
             $this->db->group_by('inv_product.name');
             $this->db->order_by('inv_product.id');
             $query = $this->db->get();
@@ -1979,12 +1982,14 @@ $result = $query->row();
                 return 0;
             }
         }
-    
-    	public function get_stock_without_dittum(){
+
+    	public function get_stock_without_dittum($store_id=null){
             $this->db->select('inv_product.id as pro_id,inv_product.name,inv_product.code,SUM(stock.qty) as qty');
             $this->db->from('inv_product');
             $this->db->join('stock','stock.productid = inv_product.id');
-        
+            if($store_id != null && $store_id != ''){
+                $this->db->where('stock.storeid', $store_id);
+            }
             $this->db->group_by('inv_product.name');
             $this->db->order_by('inv_product.id');
             $query = $this->db->get();
@@ -1994,6 +1999,19 @@ $result = $query->row();
             else {
                 return 0;
             }
+        }
+
+        public function get_stock_stores(){
+            $this->db->select('counter.store, counter.name');
+            $this->db->from('counter');
+            $this->db->where('counter.store IS NOT NULL', null, false);
+            $this->db->where('counter.store !=', '');
+            $this->db->order_by('counter.name');
+            $query = $this->db->get();
+            if ($query && $query->num_rows() > 0) {
+                return $query->result_array();
+            }
+            return array();
         }
         
         public function get_stockdtl($id){

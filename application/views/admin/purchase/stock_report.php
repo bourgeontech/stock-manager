@@ -18,8 +18,19 @@
               <div class="col-lg-12 col-md-12 col-sm-12">
                 <h2 class="page_txt"><i class="fa fa-list-ol" aria-hidden="true"></i>&nbsp;&nbsp;View Stock Report </h2>
               </div>
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <form action="<?php echo base_url();?>index.php/admin/admin/stock_report" method="post" class="form-inline" style="margin-bottom:10px;">
+                  <select name="store_id" class="sq_form" style="width:auto;display:inline-block;margin-right:5px;">
+                    <option value="">All Stores</option>
+                    <?php if(isset($store_list) && !empty($store_list)){ foreach($store_list as $s){ ?>
+                    <option value="<?php echo $s['store'];?>" <?php if(isset($store_id) && $store_id==$s['store']) echo 'selected';?>><?php echo $s['name'];?></option>
+                    <?php }} ?>
+                  </select>
+                  <button type="submit" class="btn btn-outline-secondary"><i class="fa fa-filter" aria-hidden="true"></i> Filter</button>
+                </form>
+              </div>
               <div class="col-lg-9 col-md-9 col-sm-9">
-                  </div>
+              </div>
     			 <div class="col-lg-3 col-md-3 col-sm-3">
               		<input id="myInput" type="text" class="sq_form" placeholder="Search..">
               </div>

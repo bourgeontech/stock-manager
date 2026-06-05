@@ -26,13 +26,19 @@
 			 </div>
           	<div class="col-lg-12 col-md-12 col-sm-12 ">
                   <form  action="<?php echo base_url();?>index.php/admin/admin/stock_report" method="post">
-                  	<?php 
+                  	<?php
                   	$role=$this->loggedIn['role'];
                   	?>
                     <div class="input-group">
-                      
+
                       <input type="date" class="form-control" value="<?php if(isset($datef)){echo $datef;}else{echo date('Y-m-d');}?>" name="datef" style="margin:10px 0;">
                       <input type="date" class="form-control" value="<?php if(isset($datet)){echo $datet;}else{echo date('Y-m-d');}?>" name="datet" style="margin:10px 0;">
+                      <select name="store_id" class="form-control" style="margin:10px 5px;width:auto;">
+                        <option value="">All Stores</option>
+                        <?php if(isset($store_list) && !empty($store_list)){ foreach($store_list as $s){ ?>
+                        <option value="<?php echo $s['store'];?>" <?php if(isset($store_id) && $store_id==$s['store']) echo 'selected';?>><?php echo $s['name'];?></option>
+                        <?php }} ?>
+                      </select>
                       <div class="input-group-append" style="margin:10px 0;">
                         <button type="submit" class="btn btn-outline-secondary" name="serch" value="serch" title="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
                         <button type="submit" class="btn btn-outline-secondary" name="serch" value="summary" title="Print Summary"><i class="fa fa-file" aria-hidden="true"></i></button>
@@ -77,6 +83,7 @@
                         $this->db->select_sum('qty');
 						$this->db->where('productid', $product);
 						$this->db->where('date(added_date) <', $datef);
+						if(isset($store_id) && $store_id != '') { $this->db->where('storeid', $store_id); }
 						$opening_query = $this->db->get('stock');
 
 						if ($opening_query->num_rows() > 0) {
@@ -85,12 +92,13 @@
 						} else {
     						$opening = 0;
 						}
-                        
+
                         $this->db->select_sum('qty');
 						$this->db->where('productid', $product);
 						$this->db->where('date(added_date) >=', $datef);
 						$this->db->where('date(added_date) <=', $datet);
 						$this->db->where('qty <', 0); // Include only rows where qty is negative
+						if(isset($store_id) && $store_id != '') { $this->db->where('storeid', $store_id); }
 						$debit_query = $this->db->get('stock');
 
 						if ($debit_query->num_rows() > 0) {
@@ -99,12 +107,13 @@
 						} else {
     						$debit = 0;
 						}
-                        						
+
                         $this->db->select_sum('qty');
 						$this->db->where('productid', $product);
 						$this->db->where('date(added_date) >=', $datef);
 						$this->db->where('date(added_date) <=', $datet);
 						$this->db->where('qty >', 0);
+						if(isset($store_id) && $store_id != '') { $this->db->where('storeid', $store_id); }
 						$credit_query = $this->db->get('stock');
 						
 						if ($credit_query->num_rows() > 0) {

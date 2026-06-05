@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 //require_once __DIR__ . '/vendor/autoload.php';
@@ -8380,6 +8380,7 @@ public function bill_report_twodate(){
     
     public function stock_report(){
         $data['temple_list']=$this->general_model->gettemples();
+        $data['store_list']=$this->general_model->get_stock_stores();
     
     	$this->db->select('*');
     	$this->db->from('site_settings');
@@ -8400,14 +8401,18 @@ public function bill_report_twodate(){
         
         	$data['datef'] = $datef;
         	$data['datet'] = $datet;
-            $data['stock_list']=$this->general_model->get_stock_without_dittum();
+            $store_id = $this->input->post('store_id');
+            $data['store_id'] = $store_id;
+            $data['stock_list']=$this->general_model->get_stock_without_dittum($store_id);
                 
         	$this->load->view('admin/layouts/admin_header');
         	$this->load->view('admin/purchase/stock_report_without_dittum',$data);
         	$this->load->view('admin/layouts/admin_footer');
         }
         } else {
-        		$data['stock_list']=$this->general_model->get_stock();
+        		$store_id = $this->input->post('store_id');
+        		$data['store_id'] = $store_id;
+        		$data['stock_list']=$this->general_model->get_stock($store_id);
         		$this->load->view('admin/layouts/admin_header');
         		$this->load->view('admin/purchase/stock_report',$data);
         		$this->load->view('admin/layouts/admin_footer');
